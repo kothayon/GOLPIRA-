@@ -116,8 +116,8 @@ const supabase = window.supabase.createClient(
   const password = document.getElementById("signupPassword").value;
 
   if (!name || !email || password.length < 6) {
-    document.getElementById("authMessage").innerText =
-      "নাম, ইমেইল দাও এবং কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড দাও।";
+    document.getElementById("authMessage"), ইমেইল.innerText =
+      "Please enter your name, email and a password with at least 6 characters.";
     return;
   }
 
@@ -128,7 +128,7 @@ const supabase = window.supabase.createClient(
   });
 
   document.getElementById("authMessage").innerText =
-    error ? error.message : "রেজিস্ট্রেশন হয়েছে। ইমেইল যাচাই করো।";
+    error ? error.message : "Registration successful. Please check your email.";
 }
 
 async function loginUser() {
@@ -141,7 +141,7 @@ async function loginUser() {
   });
 
   document.getElementById("authMessage").innerText =
-    error ? error.message : "লগইন সফল হয়েছে!";
+    error ? error.message : "Login successful!";
 }
 </script>
 </body>
