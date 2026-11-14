@@ -78,25 +78,21 @@ footer span{color:#f4c875}
 </div>
 </section>
 
-<section id="writer">
-<h2>আপনিও লেখক হোন</h2>
-<div class="empty">
-আপনার লেখা উপন্যাস প্রকাশ করুন GOLPIRA-তে।<br>
-<a class="btn" href="mailto:admin@golpira.example">যোগাযোগ করুন</a>
-</div>
-</section>
 <section id="auth">
-  <h2>লেখক অ্যাকাউন্ট</h2>
-  <input id="signupName" type="text" placeholder="তোমার নাম">
-  <input id="signupEmail" type="email" placeholder="ইমেইল">
-  <input id="signupPassword" type="password" placeholder="পাসওয়ার্ড">
-  <button onclick="registerUser()">নতুন অ্যাকাউন্ট তৈরি</button>
+  <h2>Writer Account</h2>
+
+  <input id="signupName" type="text" placeholder="Your Name">
+  <input id="signupEmail" type="email" placeholder="Email Address">
+  <input id="signupPassword" type="password" placeholder="Create Password">
+
+  <button onclick="registerUser()">Create Account</button>
 
   <hr>
 
-  <input id="loginEmail" type="email" placeholder="ইমেইল">
-  <input id="loginPassword" type="password" placeholder="পাসওয়ার্ড">
-  <button onclick="loginUser()">লগইন</button>
+  <input id="loginEmail" type="email" placeholder="Email Address">
+  <input id="loginPassword" type="password" placeholder="Password">
+
+  <button onclick="loginUser()">Login</button>
 
   <p id="authMessage"></p>
 </section>
