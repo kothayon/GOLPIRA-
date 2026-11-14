@@ -9,7 +9,84 @@
 <title>GOLPIRA – বাংলা উপন্যাস ও গল্প</title>
 <meta name="description" content="GOLPIRA-তে পড়ুন বাংলা উপন্যাস, প্রেমের গল্প, রহস্য ও থ্রিলার। লিখুন এবং প্রকাশ করুন নিজের গল্প।">
 <meta name="keywords" content="বাংলা উপন্যাস, বাংলা গল্প, প্রেমের গল্প, Bengali Novel, Bangla Story">
+/* GOLPIRA Premium Authentication Design */
 
+#auth {
+  max-width: 650px;
+  margin: 40px auto;
+  padding: 32px;
+  background: #ffffff;
+  border: 1px solid #e8e2d8;
+  border-radius: 20px;
+  box-shadow: 0 12px 35px rgba(30, 25, 50, 0.09);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+#auth h2 {
+  grid-column: 1 / -1;
+  color: #211b32;
+  font-size: 28px;
+  margin: 0 0 12px;
+}
+
+#auth input {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 14px;
+  border: 1px solid #ded8e8;
+  border-radius: 10px;
+  font-size: 16px;
+  outline: none;
+  background: #faf9fc;
+}
+
+#auth input:focus {
+  border-color: #b58b42;
+  background: #fff;
+}
+
+#auth button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background: #211b32;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#auth button:hover {
+  background: #b58b42;
+}
+
+#auth hr,
+#auth p {
+  grid-column: 1 / -1;
+}
+
+#auth hr {
+  width: 100%;
+  border: 0;
+  border-top: 1px solid #eee8df;
+}
+
+#auth p {
+  color: #51466a;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+  #auth {
+    grid-template-columns: 1fr;
+    margin: 20px 12px;
+    padding: 22px;
+  }
+}
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Arial,sans-serif;background:#f7f5f2;color:#242139}
