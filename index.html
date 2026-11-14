@@ -389,7 +389,7 @@ const supabase = window.supabase.createClient(
   const password = document.getElementById("signupPassword").value;
 
   if (!name || !email || password.length < 6) {
-    document.getElementById("authMessage"), ইমেইল.innerText =
+    document.getElementById("authMessage").innerText =
       "Please enter your name, email and a password with at least 6 characters.";
     return;
   }
