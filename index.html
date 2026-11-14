@@ -85,7 +85,21 @@ footer span{color:#f4c875}
 <a class="btn" href="mailto:admin@golpira.example">যোগাযোগ করুন</a>
 </div>
 </section>
+<section id="auth">
+  <h2>লেখক অ্যাকাউন্ট</h2>
+  <input id="signupName" type="text" placeholder="তোমার নাম">
+  <input id="signupEmail" type="email" placeholder="ইমেইল">
+  <input id="signupPassword" type="password" placeholder="পাসওয়ার্ড">
+  <button onclick="registerUser()">নতুন অ্যাকাউন্ট তৈরি</button>
 
+  <hr>
+
+  <input id="loginEmail" type="email" placeholder="ইমেইল">
+  <input id="loginPassword" type="password" placeholder="পাসওয়ার্ড">
+  <button onclick="loginUser()">লগইন</button>
+
+  <p id="authMessage"></p>
+</section>
 <footer>
 <div class="logo">GOLPIRA</div>
 একটি গল্প, হাজারো অনুভূতি।
@@ -100,7 +114,39 @@ const SUPABASE_KEY = "sb_publishable_3bQbus5riktWZqq60AZ3mA_yJMXnEKk";
 const supabase = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
-);
+);async function registerUser() {
+  const name = document.getElementById("signupName").value.trim();
+  const email = document.getElementById("signupEmail").value.trim();
+  const password = document.getElementById("signupPassword").value;
+
+  if (!name || !email || password.length < 6) {
+    document.getElementById("authMessage").innerText =
+      "নাম, ইমেইল দাও এবং কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড দাও।";
+    return;
+  }
+
+  const { error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: { data: { display_name: name } }
+  });
+
+  document.getElementById("authMessage").innerText =
+    error ? error.message : "রেজিস্ট্রেশন হয়েছে। ইমেইল যাচাই করো।";
+}
+
+async function loginUser() {
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPassword").value;
+
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  document.getElementById("authMessage").innerText =
+    error ? error.message : "লগইন সফল হয়েছে!";
+}
 </script>
 </body>
   </html>
