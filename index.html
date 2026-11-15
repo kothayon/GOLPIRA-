@@ -406,13 +406,21 @@ async function loginUser() {
   const email = document.getElementById("loginEmail").value.trim();
   const password = document.getElementById("loginPassword").value;
 
-  const { error } = await supabase.auth.signInWithPassword({
+  const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password
   });
 
-  document.getElementById("authMessage").innerText =
-    error ? error.message : "Login successful!";
+  if (error) {
+    document.getElementById("authMessage").innerText = error.message;
+    return;
+  }
+
+  document.getElementById("auth").style.display = "none";
+  document.getElementById("writerDashboard").style.display = "block";
+
+  document.getElementById("writerName").innerText =
+    "স্বাগতম, " + (data.user.user_metadata.display_name || "লেখক");
 }
 </script>
   <section id="writerDashboard" style="display:none; padding:20px;">
