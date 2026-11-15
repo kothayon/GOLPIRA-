@@ -422,6 +422,90 @@ async function loginUser() {
   document.getElementById("writerName").innerText =
     "স্বাগতম, " + (data.user.user_metadata.display_name || "লেখক");
 }
+  function showNovelForm() {
+  document.getElementById("novelForm").style.display = "block";
+}
+
+async function saveNovel() {
+  const title = document.getElementById("novelTitle").value.trim();
+  const genre = document.getElementById("novelGenre").value.trim();
+  const description = document.getElementById("novelDescription").value.trim();
+
+  if (!title) {
+    alert("উপন্যাসের নাম লিখুন");
+    return;
+  }
+
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    alert("আগে Login করুন");
+    return;
+  }
+
+  const { error } = await supabase.from("novels").insert({
+    author_id: user.id,
+    title: title,
+    genre: genre,
+    description: description,
+    status: "draft"
+  });
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  alert("উপন্যাস সেভ হয়েছে!");
+  document.getElementById("novelTitle").value = "";
+  document.getElementById("novelGenre").value = "";
+  document.getElementById("novelDescription").value = "";
+  loadMyNovels();
+}
+
+async function loadMyNovels() {
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) return;
+
+  const { data, error } = await supabase
+    .from("novels")
+    .select("title, genre, status")
+    .eq("author_id", user.id);
+
+  const area = document.getElementById("myNovels");
+  area.innerHTML = "";
+
+  if (error) {
+    area.textContent = error.message;
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    area.textContent = "এখনো কোনো উপন্যাস নেই।";
+    return;
+  }
+
+  data.forEach(novel => {
+    const item = document.createElement("p");
+    item.textContent = novel.title + " — " +
+      (novel.genre || "ধরন নেই") + " (" + novel.status + ")";
+    area.appendChild(item);
+  });
+}
+
+async function logoutUser() {
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  document.getElementById("writerDashboard").style.display = "none";
+  document.getElementById("auth").style.display = "block";
+  document.getElementById("authMessage").innerText = "আপনি Logout করেছেন।";
+}
 </script>
   <section id="writerDashboard" style="display:none; padding:20px;">
   <h2>স্বাগতম, GOLPIRA লেখক!</h2>
