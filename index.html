@@ -22,7 +22,26 @@
 html {
   scroll-behavior: smooth;
 }
+<section id="writerDashboard" style="display:none; padding:20px;">
+  <h2>Welcome to GOLPIRA</h2>
+  <p id="writerName">Writer Dashboard</p>
 
+  <div style="display:grid; gap:12px;">
+    <button onclick="showNovelForm()">➕ নতুন উপন্যাস লিখুন</button>
+    <button onclick="loadMyNovels()">📚 আমার উপন্যাস</button>
+    <button onclick="logoutUser()">Logout</button>
+  </div>
+
+  <div id="novelForm" style="display:none; margin-top:20px;">
+    <h3>নতুন উপন্যাস</h3>
+    <input id="novelTitle" placeholder="উপন্যাসের নাম">
+    <input id="novelGenre" placeholder="ধরন">
+    <textarea id="novelDescription" placeholder="উপন্যাসের বিবরণ"></textarea>
+    <button onclick="saveNovel()">Save Novel</button>
+  </div>
+
+  <div id="myNovels"></div>
+</section>
 body {
   font-family: Arial, sans-serif;
   background: #f7f5f2;
