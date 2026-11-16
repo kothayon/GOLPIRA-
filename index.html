@@ -1,557 +1,550 @@
-
 <!DOCTYPE html>
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#17152b">
-
-<title>GOLPIRA – বাংলা উপন্যাস ও গল্প</title>
-<meta name="description" content="GOLPIRA-তে পড়ুন বাংলা উপন্যাস ও গল্প। লিখুন এবং প্রকাশ করুন নিজের গল্প।">
-
+<meta name="description" content="GOLPIRA — বাংলা উপন্যাস ও গল্প পড়ুন, লিখুন এবং প্রকাশ করুন।">
+<title>GOLPIRA — বাংলা উপন্যাস ও গল্প</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+:root{
+  --ink:#242139;--navy:#17152b;--navy2:#252044;--purple:#57406d;
+  --gold:#f4c875;--paper:#f7f5f2;--white:#fff;--muted:#777386;
+  --line:#e8e2d8;--soft:#f0edf5;--shadow:0 8px 25px rgba(30,25,50,.09);
 }
-
-html {
-  scroll-behavior: smooth;
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"Hind Siliguri",Arial,sans-serif;background:var(--paper);color:var(--ink);line-height:1.6;padding-bottom:82px}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+.topbar{position:sticky;top:0;z-index:20;background:var(--navy);color:#fff;padding:12px 16px;box-shadow:0 3px 15px #17152b22}
+.top-inner{max-width:1120px;margin:auto;display:flex;align-items:center;gap:13px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand-mark{width:42px;height:42px;border-radius:13px;background:var(--gold);color:var(--navy);display:grid;place-items:center;font-size:25px;font-weight:700}
+.brand-name{font-size:25px;line-height:1;font-weight:700;letter-spacing:1px;color:var(--gold)}
+.brand-tag{font-size:11px;color:#ddd}
+.top-actions{margin-left:auto;display:flex;gap:8px}
+.icon-btn{width:40px;height:40px;border:1px solid #ffffff30;background:#ffffff12;color:#fff;border-radius:12px;font-size:19px}
+.page{max-width:1120px;margin:auto}
+.hero{margin:18px 14px 8px;padding:28px 22px;border-radius:22px;background:linear-gradient(135deg,var(--navy2),var(--purple));color:#fff;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;width:180px;height:180px;border:1px solid #f4c87555;border-radius:50%;right:-55px;top:-70px;box-shadow:0 0 0 20px #f4c87510,0 0 0 42px #f4c8750a}
+.hero h1{font-size:clamp(25px,5vw,38px);line-height:1.25;margin-bottom:8px;max-width:650px}
+.hero p{color:#eee;max-width:620px}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.btn{border:0;border-radius:12px;padding:10px 18px;font-weight:600;background:var(--gold);color:var(--navy)}
+.btn.secondary{background:#ffffff18;color:#fff;border:1px solid #ffffff55}
+.btn.dark{background:var(--navy);color:#fff}
+.btn.light{background:var(--soft);color:var(--navy)}
+.btn.danger{background:#8c3546;color:#fff}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.search-wrap{padding:14px}
+.search{width:100%;border:1px solid var(--line);border-radius:14px;background:#fff;padding:13px 16px;outline:none;color:var(--ink)}
+.search:focus,.field:focus{border-color:var(--purple);box-shadow:0 0 0 3px #57406d18}
+.section{padding:17px 14px}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:13px}
+.section-title{font-size:22px;font-weight:700;display:flex;align-items:center;gap:9px}
+.section-title:before{content:"";width:5px;height:24px;border-radius:5px;background:var(--gold)}
+.see-more{color:var(--purple);font-weight:600;background:none;border:0}
+.chips{display:flex;gap:9px;overflow:auto;padding:2px 0 8px}
+.chip{white-space:nowrap;border:1px solid var(--line);border-radius:22px;padding:7px 14px;background:#fff;color:var(--ink)}
+.chip.active{background:var(--navy);color:var(--gold);border-color:var(--navy)}
+.feature-row{display:flex;gap:13px;overflow-x:auto;padding:3px 2px 12px;scroll-snap-type:x mandatory}
+.feature{min-width:min(84vw,390px);display:flex;align-items:center;gap:15px;background:var(--navy);color:#fff;padding:14px;border-radius:19px;box-shadow:var(--shadow);scroll-snap-align:start}
+.cover{width:92px;height:124px;flex:none;border-radius:9px;background:linear-gradient(145deg,#57406d,#17152b);border:2px solid var(--gold);display:grid;place-items:center;color:var(--gold);font-size:28px;text-align:center;overflow:hidden}
+.cover img{width:100%;height:100%;object-fit:cover}
+.feature h3{font-size:19px;line-height:1.3;margin-bottom:5px}
+.feature p{color:#ddd;font-size:14px}
+.feature .btn{margin-top:9px;padding:6px 16px;border-radius:22px}
+.book-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.book-card{min-width:0;background:#fff;border:1px solid var(--line);border-radius:15px;padding:9px;box-shadow:0 3px 12px #17152b08}
+.book-cover{height:190px;border-radius:10px;background:linear-gradient(145deg,#57406d,#17152b);color:var(--gold);display:grid;place-items:center;text-align:center;font-size:32px;overflow:hidden}
+.book-cover img{width:100%;height:100%;object-fit:cover}
+.book-card h3{font-size:16px;line-height:1.35;margin:8px 2px 2px}
+.book-author{color:var(--purple);font-size:14px;margin:0 2px}
+.book-meta{color:var(--muted);font-size:12px;margin:3px 2px}
+.empty{background:#fff;border:1px dashed var(--line);border-radius:15px;padding:26px 15px;text-align:center;color:var(--muted);grid-column:1/-1}
+.panel{margin:16px 14px;background:#fff;border:1px solid var(--line);border-radius:19px;padding:18px;box-shadow:var(--shadow)}
+.panel h2{font-size:23px;margin-bottom:12px}
+.field{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:11px;background:#fcfbfd;color:var(--ink);outline:none;margin:5px 0 12px}
+textarea.field{min-height:115px;resize:vertical}
+label{display:block;font-weight:600;font-size:14px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+.form-grid .full{grid-column:1/-1}
+.tabs{display:flex;gap:8px;margin-bottom:14px}
+.tab{flex:1;padding:9px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+.tab.active{background:var(--navy);color:var(--gold);border-color:var(--navy)}
+.notice{padding:10px 12px;border-radius:10px;background:var(--soft);color:var(--purple);font-size:14px;margin:8px 0;overflow-wrap:anywhere}
+.notice.error{background:#fff0f0;color:#9b2838}
+.notice.success{background:#eef8ef;color:#27623b}
+.hidden{display:none!important}
+.dashboard-actions{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.novel-row{border:1px solid var(--line);border-radius:13px;padding:12px;margin:9px 0;background:#fff}
+.novel-row h3{font-size:18px}
+.novel-row p{color:var(--muted);font-size:13px}
+.row-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+.small-btn{padding:6px 11px;border:0;border-radius:8px;background:var(--soft);color:var(--navy);font-size:13px}
+.reader{white-space:pre-wrap;line-height:2;font-size:18px;background:#fff;padding:18px;border-radius:14px;border:1px solid var(--line)}
+.chapter-row{padding:12px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;align-items:center}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:25;background:#fff;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);padding:7px max(8px,env(safe-area-inset-right)) calc(7px + env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left))}
+.nav-item{border:0;background:none;color:#888092;padding:5px 2px;border-radius:12px;font-size:12px;display:grid;justify-items:center;gap:1px}
+.nav-item span:first-child{font-size:20px}
+.nav-item.active{color:var(--navy);background:#f1edf7;font-weight:700}
+.nav-item.active span:first-child{color:var(--purple)}
+.footer{background:var(--navy);color:#ddd;text-align:center;padding:25px 15px;margin-top:20px;font-size:13px}
+.footer strong{color:var(--gold);font-size:22px}
+@media(min-width:650px){
+ .hero{margin:25px 20px;padding:48px 40px}
+ .section{padding:22px 20px}
+ .book-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+ .book-cover{height:230px}
+ .feature{min-width:420px}
+ .panel{padding:24px;margin:20px}
 }
-
-body {
-  font-family: Arial, sans-serif;
-  background: #f7f5f2;
-  color: #242139;
-  line-height: 1.6;
-}
-
-header {
-  background: #17152b;
-  color: white;
-  padding: 24px 20px;
-}
-
-.logo {
-  font-size: 32px;
-  font-weight: 800;
-  letter-spacing: 3px;
-  color: #f4c875;
-}
-
-.tag {
-  color: #ddd;
-  font-size: 14px;
-}
-
-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 22px;
-  margin-top: 20px;
-}
-
-nav a {
-  color: white;
-  text-decoration: none;
-}
-
-nav a:hover {
-  color: #f4c875;
-}
-
-.hero {
-  padding: 65px 20px;
-  text-align: center;
-  color: white;
-  background: linear-gradient(135deg, #252044, #57406d);
-}
-
-.hero h1 {
-  font-size: 32px;
-  margin-bottom: 15px;
-}
-
-.hero p {
-  color: #eee;
-}
-
-.btn {
-  display: inline-block;
-  margin-top: 22px;
-  padding: 14px 28px;
-  background: #f4c875;
-  color: #211b32;
-  border-radius: 30px;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-section {
-  padding: 30px 20px;
-}
-
-h2 {
-  font-size: 23px;
-  margin-bottom: 18px;
-}
-
-.search {
-  width: 100%;
-  padding: 16px;
-  border: 1px solid #ddd;
-  border-radius: 15px;
-  font-size: 16px;
-}
-
-.categories {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.cat {
-  background: white;
-  padding: 12px 18px;
-  border-radius: 30px;
-  border: 1px solid #eee;
-}
-
-.empty {
-  background: white;
-  border-radius: 16px;
-  padding: 35px 20px;
-  text-align: center;
-  color: #777;
-}
-
-#auth, #writerDashboard {
-  max-width: 650px;
-  margin: 35px auto;
-  padding: 25px;
-  background: white;
-  border: 1px solid #e8e2d8;
-  border-radius: 20px;
-  box-shadow: 0 12px 35px rgba(30,25,50,.09);
-}
-
-#auth {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0,1fr));
-  gap: 14px;
-}
-
-#auth h2, #auth p, #auth hr {
-  grid-column: 1 / -1;
-}
-
-#auth input, #writerDashboard input,
-#writerDashboard textarea {
-  width: 100%;
-  min-width: 0;
-  padding: 14px;
-  border: 1px solid #ded8e8;
-  border-radius: 10px;
-  font-size: 16px;
-  background: #faf9fc;
-}
-
-#writerDashboard textarea {
-  min-height: 110px;
-  resize: vertical;
-}
-
-#auth button, #writerDashboard button {
-  padding: 14px;
-  border: none;
-  border-radius: 10px;
-  background: #211b32;
-  color: white;
-  font-size: 15px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-#auth button:hover, #writerDashboard button:hover {
-  background: #57406d;
-}
-
-#auth hr {
-  width: 100%;
-  border: 0;
-  border-top: 1px solid #eee;
-}
-
-#auth p {
-  overflow-wrap: anywhere;
-  color: #51466a;
-}
-
-#writerDashboard {
-  display: none;
-}
-
-#writerDashboard button {
-  margin: 6px 0;
-}
-
-#novelForm {
-  margin-top: 20px;
-}
-
-#novelForm input, #novelForm textarea {
-  margin-bottom: 12px;
-}
-
-#myNovels {
-  margin-top: 20px;
-  overflow-wrap: anywhere;
-}
-
-.novel-item {
-  padding: 12px;
-  margin: 10px 0;
-  background: #f7f5f2;
-  border-radius: 10px;
-}
-
-footer {
-  background: #17152b;
-  color: white;
-  text-align: center;
-  padding: 28px 18px;
-  font-size: 14px;
-}
-
-@media(max-width:600px) {
-  header {
-    padding: 20px 16px;
-  }
-
-  .hero {
-    padding: 48px 18px;
-  }
-
-  .hero h1 {
-    font-size: 26px;
-  }
-
-  #auth, #writerDashboard {
-    margin: 25px 14px;
-    padding: 20px;
-  }
-
-  #auth {
-    grid-template-columns: 1fr;
-  }
-
-  section {
-    padding: 25px 16px;
-  }
-}
+@media(max-width:380px){.book-grid{gap:9px}.book-cover{height:160px}.brand-name{font-size:22px}.form-grid{grid-template-columns:1fr}.form-grid .full{grid-column:auto}}
 </style>
 </head>
-
 <body>
-
-<header>
-  <div class="logo">GOLPIRA</div>
-  <div class="tag">একটি গল্প, হাজারো অনুভূতি</div>
-  <nav>
-    <a href="#">হোম</a>
-    <a href="#novels">উপন্যাস</a>
-    <a href="#categories">বিভাগ</a>
-    <a href="#auth">লেখক</a>
-  </nav>
+<header class="topbar">
+ <div class="top-inner">
+  <div class="brand"><div class="brand-mark">গ</div><div><div class="brand-name">GOLPIRA</div><div class="brand-tag">একটি গল্প, হাজারো অনুভূতি</div></div></div>
+  <div class="top-actions">
+   <button class="icon-btn" onclick="showPage('writer')" aria-label="লেখক">✍</button>
+   <button class="icon-btn" onclick="focusSearch()" aria-label="খুঁজুন">⌕</button>
+  </div>
+ </div>
 </header>
 
-<div class="hero">
+<main class="page">
+<section id="homePage">
+ <div class="hero">
   <h1>গল্পের পাতায় হারিয়ে যাও</h1>
-  <p>পড়ুন প্রিয় উপন্যাস। লিখুন নিজের গল্প।<br>
-  ছড়িয়ে দিন আপনার কল্পনার জগৎ।</p>
-  <a class="btn" href="#novels">গল্প পড়ুন</a>
-</div>
-
-<section>
-  <input class="search" type="search"
-  placeholder="উপন্যাস বা লেখকের নাম খুঁজুন...">
-</section>
-
-<section id="categories">
-  <h2>গল্পের বিভাগ</h2>
-  <div class="categories">
-    <div class="cat">📚 উপন্যাস</div>
-    <div class="cat">❤️ প্রেম</div>
-    <div class="cat">💔 বিরহ</div>
-    <div class="cat">🕵️ রহস্য</div>
-    <div class="cat">🔥 থ্রিলার</div>
-    <div class="cat">📖 সামাজিক</div>
-    <div class="cat">✨ রোমান্টিক</div>
+  <p>পড়ুন প্রিয় উপন্যাস। লিখুন নিজের গল্প। ছড়িয়ে দিন আপনার কল্পনার জগৎ।</p>
+  <div class="hero-actions"><button class="btn" onclick="document.getElementById('latestSection').scrollIntoView()">গল্প পড়ুন</button><button class="btn secondary" onclick="showPage('writer')">লেখক হোন</button></div>
+ </div>
+ <div class="search-wrap"><input id="searchInput" class="search" type="search" placeholder="উপন্যাস বা লেখকের নাম খুঁজুন..." oninput="renderBooks()"></div>
+ <section class="section">
+  <div class="section-head"><h2 class="section-title">নির্বাচিত উপন্যাস</h2></div>
+  <div id="featuredBooks" class="feature-row"><div class="empty">উপন্যাস লোড হচ্ছে...</div></div>
+ </section>
+ <section class="section">
+  <div class="section-head"><h2 class="section-title">গল্পের বিভাগ</h2></div>
+  <div id="categoryChips" class="chips">
+   <button class="chip active" onclick="setCategory('সব')">সব</button>
+   <button class="chip" onclick="setCategory('প্রেম')">❤️ প্রেম</button>
+   <button class="chip" onclick="setCategory('বিরহ')">💔 বিরহ</button>
+   <button class="chip" onclick="setCategory('রহস্য')">🕵️ রহস্য</button>
+   <button class="chip" onclick="setCategory('থ্রিলার')">🔥 থ্রিলার</button>
+   <button class="chip" onclick="setCategory('সামাজিক')">📖 সামাজিক</button>
+   <button class="chip" onclick="setCategory('রোমান্টিক')">✨ রোমান্টিক</button>
   </div>
+ </section>
+ <section class="section" id="latestSection">
+  <div class="section-head"><h2 class="section-title">আজকের নতুন উপন্যাস</h2><button class="see-more" onclick="showPage('books')">সব দেখুন →</button></div>
+  <div id="latestBooks" class="book-grid"><div class="empty">লোড হচ্ছে...</div></div>
+ </section>
+ <section class="section">
+  <div class="section-head"><h2 class="section-title">জনপ্রিয় উপন্যাস</h2><button class="see-more" onclick="showPage('books')">See More →</button></div>
+  <div id="popularBooks" class="book-grid"><div class="empty">লোড হচ্ছে...</div></div>
+ </section>
 </section>
 
-<section id="novels">
-  <h2>জনপ্রিয় উপন্যাস</h2>
-  <div class="empty">
-    📚<br>
-    এখনও কোনো উপন্যাস প্রকাশিত হয়নি।
-  </div>
+<section id="booksPage" class="hidden">
+ <section class="section"><div class="section-head"><h2 class="section-title">সব উপন্যাস</h2></div><input id="allSearch" class="search" placeholder="নাম বা লেখক খুঁজুন..." oninput="renderAllBooks()"><div id="allBooks" class="book-grid" style="margin-top:14px"></div></section>
 </section>
 
-<section id="auth">
+<section id="readerPage" class="hidden">
+ <div class="panel">
+  <button class="btn light" onclick="showPage('books')">← ফিরে যান</button>
+  <div id="readerContent" style="margin-top:16px"></div>
+ </div>
+</section>
+
+<section id="writerPage" class="hidden">
+ <div id="authPanel" class="panel">
   <h2>Writer Account</h2>
-
-  <input id="signupName" type="text" placeholder="Your Name">
-  <input id="signupEmail" type="email" placeholder="Email Address">
-  <input id="signupPassword" type="password" placeholder="Create Password">
-
-  <button type="button" onclick="registerUser()">Create Account</button>
-
-  <hr>
-
-  <input id="loginEmail" type="email" placeholder="Email Address">
-  <input id="loginPassword" type="password" placeholder="Password">
-
-<button type="button" onclick="loginUser()">Login</button>
-
-  <p id="authMessage"></p>
-</section>
-
-<section id="writerDashboard">
-  <h2>GOLPIRA Writer Dashboard</h2>
-  <p id="writerName">স্বাগতম!</p>
-
-  <button type="button" onclick="showNovelForm()">
-    ➕ নতুন উপন্যাস লিখুন
-  </button>
-
-  <button type="button" onclick="loadMyNovels()">
-    📚 আমার উপন্যাস
-  </button>
-
-  <button type="button" onclick="logoutUser()">
-    Logout
-  </button>
-
-  <div id="novelForm" style="display:none;">
-    <h3>নতুন উপন্যাস</h3>
-
-    <input id="novelTitle" placeholder="উপন্যাসের নাম">
-    <input id="novelGenre" placeholder="উপন্যাসের ধরন">
-    <textarea id="novelDescription"
-    placeholder="উপন্যাসের বিবরণ"></textarea>
-
-    <button type="button" onclick="saveNovel()">
-      Save Novel
-    </button>
+  <p style="color:var(--muted);margin-bottom:14px">GOLPIRA-তে লেখক হিসেবে যোগ দিন অথবা আপনার অ্যাকাউন্টে Login করুন।</p>
+  <div class="tabs"><button id="loginTab" class="tab active" onclick="switchAuth('login')">Login</button><button id="signupTab" class="tab" onclick="switchAuth('signup')">Create Account</button></div>
+  <div id="loginForm">
+   <label for="loginEmail">ইমেল</label><input id="loginEmail" class="field" type="email" autocomplete="email" placeholder="আপনার ইমেল">
+   <label for="loginPassword">পাসওয়ার্ড</label><input id="loginPassword" class="field" type="password" autocomplete="current-password" placeholder="পাসওয়ার্ড">
+   <button id="loginButton" class="btn dark" style="width:100%" onclick="loginUser()">Login করুন</button>
   </div>
-
-  <div id="myNovels"></div>
+  <div id="signupForm" class="hidden">
+   <label for="signupName">আপনার নাম</label><input id="signupName" class="field" autocomplete="name" placeholder="লেখকের নাম">
+   <label for="signupEmail">ইমেল</label><input id="signupEmail" class="field" type="email" autocomplete="email" placeholder="ইমেল ঠিকানা">
+   <label for="signupPassword">পাসওয়ার্ড</label><input id="signupPassword" class="field" type="password" autocomplete="new-password" placeholder="কমপক্ষে ৬ অক্ষর">
+   <button id="signupButton" class="btn dark" style="width:100%" onclick="registerUser()">Create Account</button>
+  </div>
+  <div id="authMessage" class="notice hidden" role="status"></div>
+ </div>
+ <div id="writerDashboard" class="panel hidden">
+  <h2>Writer Dashboard</h2><p id="writerName">স্বাগতম!</p>
+  <div class="dashboard-actions">
+   <button class="btn" onclick="openNovelForm()">＋ নতুন উপন্যাস</button>
+   <button class="btn light" onclick="loadMyNovels()">আমার উপন্যাস</button>
+   <button class="btn light" onclick="logoutUser()">Logout</button>
+  </div>
+  <div id="novelEditor" class="hidden">
+   <h3 id="novelEditorTitle">নতুন উপন্যাস</h3>
+   <input type="hidden" id="editingNovelId">
+   <label>উপন্যাসের নাম</label><input id="novelTitle" class="field" placeholder="উপন্যাসের নাম">
+   <label>লেখকের নাম</label><input id="novelAuthor" class="field" placeholder="লেখকের নাম">
+   <label>ধরন / বিভাগ</label><input id="novelGenre" class="field" placeholder="যেমন: প্রেম, রহস্য, থ্রিলার">
+   <label>কভার ছবির URL (ঐচ্ছিক)</label><input id="novelCover" class="field" type="url" placeholder="https://...">
+   <label>উপন্যাসের বিবরণ</label><textarea id="novelDescription" class="field" placeholder="উপন্যাসের সংক্ষিপ্ত বিবরণ"></textarea>
+   <div class="dashboard-actions"><button class="btn dark" onclick="saveNovel()">Save Novel</button><button class="btn light" onclick="closeNovelForm()">বাতিল</button></div>
+   <div id="novelMessage" class="notice hidden"></div>
+  </div>
+  <div id="myNovels"><p class="notice">আপনার উপন্যাস এখানে দেখা যাবে।</p></div>
+ </div>
 </section>
 
-<footer>
-  <div class="logo">GOLPIRA</div>
-  একটি গল্প, হাজারো অনুভূতি।
-  <br>© 2026 GOLPIRA. All Rights Reserved.
-  <br>Owned and managed by Arham Ahmed Nil.
-</footer>
+<section id="profilePage" class="hidden">
+ <div class="panel"><h2>আমার প্রোফাইল</h2><div id="profileInfo">লেখক অ্যাকাউন্টে Login করলে প্রোফাইল দেখা যাবে।</div><button class="btn dark" onclick="showPage('writer')">Writer Account</button></div>
+</section>
+</main>
+
+<footer class="footer"><strong>GOLPIRA</strong><br>একটি গল্প, হাজারো অনুভূতি।<br>© 2026 GOLPIRA. All Rights Reserved.<br>Owned and managed by Arham Ahmed Nil.</footer>
+
+<nav class="bottom-nav">
+ <button class="nav-item active" id="navHome" onclick="showPage('home')"><span>⌂</span><span>Home</span></button>
+ <button class="nav-item" id="navBooks" onclick="showPage('books')"><span>▤</span><span>উপন্যাস</span></button>
+ <button class="nav-item" id="navWriter" onclick="showPage('writer')"><span>✍</span><span>লেখক</span></button>
+ <button class="nav-item" id="navProfile" onclick="showPage('profile')"><span>♙</span><span>প্রোফাইল</span></button>
+</nav>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script>
+"use strict";
+
+/* GOLPIRA Supabase configuration — Publishable key is intended for frontend use. */
 const SUPABASE_URL = "https://braregeyqrprrhmqdddc.supabase.co";
 const SUPABASE_KEY = "sb_publishable_3bQbus5riktWZqq60AZ3mA_yJMXnEKk";
 
-const supabase = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+let supabaseClient = null;
+let allNovels = [];
+let activeCategory = "সব";
+let currentUser = null;
+let currentNovel = null;
 
-async function registerUser() {
-  const name = document.getElementById("signupName").value.trim();
-  const email = document.getElementById("signupEmail").value.trim();
-  const password = document.getElementById("signupPassword").value;
-  const message = document.getElementById("authMessage");
+function byId(id){ return document.getElementById(id); }
+function showNotice(id, message, type=""){
+  const el=byId(id); if(!el)return;
+  el.textContent=message; el.className="notice"+(type?" "+type:"");
+  el.classList.remove("hidden");
+}
+function hideNotice(id){const el=byId(id);if(el)el.classList.add("hidden");}
 
-  if (!name || !email || password.length < 6) {
-    message.innerText = "নাম, ইমেল এবং কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড দিন।";
+function showPage(page){
+  const ids={home:"homePage",books:"booksPage",reader:"readerPage",writer:"writerPage",profile:"profilePage"};
+  Object.entries(ids).forEach(([key,id])=>byId(id).classList.toggle("hidden",key!==page));
+  ["Home","Books","Writer","Profile"].forEach(n=>{
+    const key=n.toLowerCase(),el=byId("nav"+n);
+    if(el)el.classList.toggle("active",key===page);
+  });
+  window.scrollTo({top:0,behavior:"smooth"});
+  if(page==="books")renderAllBooks();
+  if(page==="profile")renderProfile();
+}
+function focusSearch(){showPage("home");setTimeout(()=>byId("searchInput").focus(),100);}
+function switchAuth(mode){
+  const login=mode==="login";
+  byId("loginForm").classList.toggle("hidden",!login);
+  byId("signupForm").classList.toggle("hidden",login);
+  byId("loginTab").classList.toggle("active",login);
+  byId("signupTab").classList.toggle("active",!login);
+  hideNotice("authMessage");
+}
+function setCategory(category){
+  activeCategory=category;
+  document.querySelectorAll("#categoryChips .chip").forEach(b=>b.classList.toggle("active",b.textContent.trim().replace(/^❤️ |^💔 |^🕵️ |^🔥 |^📖 |^✨ /,"")===category));
+  renderBooks();
+}
+function safeImage(url,title){
+  if(url && /^https?:\/\//i.test(url)) return '<img src="'+escapeAttr(url)+'" alt="'+escapeAttr(title)+'" loading="lazy" onerror="this.style.display=\'none\'">';
+  return '<span>✧<br>G</span>';
+}
+function escapeHTML(value){
+  return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function escapeAttr(value){return escapeHTML(value);}
+function coverMarkup(novel,cls="book-cover"){
+  return '<div class="'+cls+'">'+safeImage(novel.cover_url,novel.title)+'</div>';
+}
+function bookCard(novel){
+  const author=novel.author_name||"GOLPIRA লেখক";
+  return '<article class="book-card">'+
+    '<a href="#" onclick="openNovel(\''+escapeAttr(novel.id)+'\');return false">'+coverMarkup(novel)+'</a>'+
+    '<h3><a href="#" onclick="openNovel(\''+escapeAttr(novel.id)+'\');return false">'+escapeHTML(novel.title)+'</a></h3>'+
+    '<div class="book-author">'+escapeHTML(author)+'</div>'+
+    '<div class="book-meta">📚 '+escapeHTML(novel.genre||"উপন্যাস")+'</div></article>';
+}
+function featureCard(novel){
+  return '<article class="feature">'+coverMarkup(novel,"cover")+'<div><h3>'+escapeHTML(novel.title)+'</h3><p>লেখক: '+escapeHTML(novel.author_name||"GOLPIRA লেখক")+'</p><button class="btn" onclick="openNovel(\''+escapeAttr(novel.id)+'\')">পড়ুন</button></div></article>';
+}
+async function loadPublicNovels(){
+  if(!supabaseClient){
+    byId("featuredBooks").innerHTML='<div class="empty">Supabase সংযোগ তৈরি হয়নি। ইন্টারনেট সংযোগ পরীক্ষা করুন।</div>';
+    byId("latestBooks").innerHTML='<div class="empty">এখন উপন্যাস লোড করা যাচ্ছে না।</div>';
+    byId("popularBooks").innerHTML='<div class="empty">এখন উপন্যাস লোড করা যাচ্ছে না।</div>';
     return;
   }
-
-  message.innerText = "অ্যাকাউন্ট তৈরি হচ্ছে...";
-
-  try {
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { display_name: name }
-      }
-    });
-
-    message.innerText = error
-      ? error.message
-      : "Registration সফল। ইমেল চেক করে অ্যাকাউন্ট নিশ্চিত করুন।";
-
-  } catch (err) {
-    message.innerText = "সমস্যা: " + err.message;
-  }
-}
-
-async function loginUser() {
-  alert("Login function started");
-  const email = document.getElementById("loginEmail").value.trim();
-  const password = document.getElementById("loginPassword").value;
-  const message = document.getElementById("authMessage");
-
-  if (!email || !password) {
-    message.innerText = "ইমেল এবং পাসওয়ার্ড লিখুন।";
+  const {data,error}=await supabaseClient.from("novels")
+    .select("id,title,slug,description,cover_url,genre,status,created_at,author_id")
+    .eq("status","published").order("created_at",{ascending:false}).limit(60);
+  if(error){
+    console.error("Public novels:",error);
+    const msg="উপন্যাস লোড করা যায়নি: "+error.message;
+    byId("featuredBooks").innerHTML='<div class="empty">'+escapeHTML(msg)+'</div>';
+    byId("latestBooks").innerHTML='<div class="empty">'+escapeHTML(msg)+'</div>';
+    byId("popularBooks").innerHTML='<div class="empty">'+escapeHTML(msg)+'</div>';
     return;
   }
-
-  message.innerText = "Login হচ্ছে...";
-
-  try {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password
-    });
-
-    if (error) {
-      message.innerText = error.message;
-      return;
-    }
-
-    document.getElementById("auth").style.display = "none";
-    document.getElementById("writerDashboard").style.display = "block";
-
-    document.getElementById("writerName").innerText =
-      "স্বাগতম, " +
-      (data.user.user_metadata.display_name || "লেখক");
-
-    loadMyNovels();
-
-  } catch (err) {
-    message.innerText = "সমস্যা: " + err.message;
+  allNovels=data||[];
+  renderBooks();
+}
+function filteredNovels(query=""){
+  const q=query.trim().toLocaleLowerCase();
+  return allNovels.filter(n=>{
+    const matchCategory=activeCategory==="সব" || (n.genre||"").toLocaleLowerCase().includes(activeCategory.toLocaleLowerCase());
+    const matchText=!q || [n.title,n.genre,n.description].join(" ").toLocaleLowerCase().includes(q);
+    return matchCategory&&matchText;
+  });
+}
+function renderBooks(){
+  const query=byId("searchInput")?.value||"";
+  const list=filteredNovels(query);
+  byId("featuredBooks").innerHTML=list.length?list.slice(0,5).map(featureCard).join(""):'<div class="empty">এখনও কোনো প্রকাশিত উপন্যাস পাওয়া যায়নি।</div>';
+  byId("latestBooks").innerHTML=list.length?list.slice(0,4).map(bookCard).join(""):'<div class="empty">এই বিভাগে কোনো উপন্যাস নেই।</div>';
+  byId("popularBooks").innerHTML=list.length?list.slice(0,4).map(bookCard).join(""):'<div class="empty">জনপ্রিয় উপন্যাস পরে এখানে দেখানো হবে।</div>';
+}
+function renderAllBooks(){
+  const q=(byId("allSearch")?.value||"").trim().toLocaleLowerCase();
+  const list=allNovels.filter(n=>[n.title,n.genre,n.description].join(" ").toLocaleLowerCase().includes(q));
+  byId("allBooks").innerHTML=list.length?list.map(bookCard).join(""):'<div class="empty">কোনো উপন্যাস পাওয়া যায়নি।</div>';
+}
+async function openNovel(id){
+  const novel=allNovels.find(n=>n.id===id);
+  if(!novel)return;
+  currentNovel=novel;
+  showPage("reader");
+  byId("readerContent").innerHTML='<h2>'+escapeHTML(novel.title)+'</h2><p style="color:var(--purple)">লেখক: '+escapeHTML(novel.author_name||"GOLPIRA লেখক")+'</p><p style="margin:10px 0 18px">'+escapeHTML(novel.description||"")+'</p><h3>অধ্যায়সমূহ</h3><div class="notice">অধ্যায় লোড হচ্ছে...</div>';
+  const {data,error}=await supabaseClient.from("chapters").select("id,chapter_number,title,content,status,created_at").eq("novel_id",id).eq("status","published").order("chapter_number",{ascending:true});
+  if(error){byId("readerContent").insertAdjacentHTML("beforeend",'<div class="notice error">অধ্যায় লোড করা যায়নি: '+escapeHTML(error.message)+'</div>');return;}
+  const chapters=data||[];
+  if(!chapters.length){byId("readerContent").insertAdjacentHTML("beforeend",'<div class="empty">এই উপন্যাসের কোনো প্রকাশিত অধ্যায় নেই।</div>');return;}
+  const list=document.createElement("div");
+  chapters.forEach(ch=>{
+    const row=document.createElement("div");row.className="chapter-row";
+    const title=document.createElement("strong");title.textContent="পর্ব "+ch.chapter_number+" — "+ch.title;
+    const btn=document.createElement("button");btn.className="small-btn";btn.textContent="পড়ুন";
+    btn.addEventListener("click",()=>readChapter(ch));
+    row.append(title,btn);list.appendChild(row);
+  });
+  byId("readerContent").appendChild(list);
+}
+function readChapter(ch){
+  const existing=byId("chapterReader");if(existing)existing.remove();
+  const box=document.createElement("article");box.id="chapterReader";box.style.marginTop="18px";
+  const h=document.createElement("h2");h.textContent="পর্ব "+ch.chapter_number+" — "+ch.title;
+  const body=document.createElement("div");body.className="reader";body.textContent=ch.content||"এই অধ্যায়ে লেখা যোগ করা হয়নি।";
+  box.append(h,body);byId("readerContent").appendChild(box);box.scrollIntoView({behavior:"smooth"});
+}
+async function registerUser(){
+  if(!supabaseClient){showNotice("authMessage","Supabase সংযোগ হয়নি। পেজটি রিফ্রেশ করে আবার চেষ্টা করুন।","error");return;}
+  const name=byId("signupName").value.trim(),email=byId("signupEmail").value.trim(),password=byId("signupPassword").value;
+  if(!name||!email||password.length<6){showNotice("authMessage","নাম, সঠিক ইমেল এবং কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড দিন।","error");return;}
+  const btn=byId("signupButton");btn.disabled=true;btn.textContent="অ্যাকাউন্ট তৈরি হচ্ছে...";
+  try{
+    const {data,error}=await supabaseClient.auth.signUp({email,password,options:{data:{display_name:name},emailRedirectTo:location.origin+location.pathname}});
+    if(error)throw error;
+    if(data.session){currentUser=data.user;await ensureProfile(name);showDashboard();}
+    else showNotice("authMessage","রেজিস্ট্রেশন সফল। ইমেল ইনবক্সে Supabase-এর নিশ্চিতকরণ লিংক দেখুন। নিশ্চিত করার পর Login করুন।","success");
+  }catch(err){showNotice("authMessage",friendlyAuthError(err.message),"error");}
+  finally{btn.disabled=false;btn.textContent="Create Account";}
+}
+function friendlyAuthError(message){
+  if(/already registered|already exists/i.test(message))return "এই ইমেল দিয়ে আগে অ্যাকাউন্ট তৈরি হয়েছে। Login করুন।";
+  if(/invalid email/i.test(message))return "সঠিক ইমেল ঠিকানা লিখুন।";
+  if(/password should be at least/i.test(message))return "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।";
+  return message;
+}
+async function loginUser(){
+  if(!supabaseClient){showNotice("authMessage","Supabase সংযোগ হয়নি। ইন্টারনেট বা CDN সংযোগ পরীক্ষা করুন।","error");return;}
+  const email=byId("loginEmail").value.trim(),password=byId("loginPassword").value;
+  if(!email||!password){showNotice("authMessage","ইমেল এবং পাসওয়ার্ড লিখুন।","error");return;}
+  const btn=byId("loginButton");btn.disabled=true;btn.textContent="Login হচ্ছে...";
+  try{
+    const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
+    if(error)throw error;
+    currentUser=data.user;
+    await ensureProfile(data.user.user_metadata?.display_name||"লেখক");
+    showDashboard();
+  }catch(err){showNotice("authMessage",friendlyAuthError(err.message),"error");}
+  finally{btn.disabled=false;btn.textContent="Login করুন";}
+}
+async function ensureProfile(displayName){
+  if(!currentUser)return;
+  const {data,error}=await supabaseClient.from("profiles").select("id,display_name,role").eq("id",currentUser.id).maybeSingle();
+  if(error){console.warn("Profile lookup:",error.message);return;}
+  if(!data){
+    const {error:insertError}=await supabaseClient.from("profiles").insert({id:currentUser.id,display_name:displayName,role:"writer"});
+    if(insertError)console.warn("Profile create:",insertError.message);
   }
 }
-
-function showNovelForm() {
-  document.getElementById("novelForm").style.display = "block";
+function showDashboard(){
+  byId("authPanel").classList.add("hidden");
+  byId("writerDashboard").classList.remove("hidden");
+  byId("writerName").textContent="স্বাগতম, "+(currentUser?.user_metadata?.display_name||"লেখক");
+  hideNotice("authMessage");loadMyNovels();showPage("writer");
 }
-
-async function saveNovel() {
-  const title = document.getElementById("novelTitle").value.trim();
-  const genre = document.getElementById("novelGenre").value.trim();
-  const description =
-    document.getElementById("novelDescription").value.trim();
-
-  if (!title) {
-    alert("উপন্যাসের নাম লিখুন।");
+async function restoreSession(){
+  if(!supabaseClient)return;
+  const {data,error}=await supabaseClient.auth.getSession();
+  if(error){console.warn(error.message);return;}
+  if(data.session){currentUser=data.session.user;showDashboard();}
+}
+function openNovelForm(novel=null){
+  byId("novelEditor").classList.remove("hidden");
+  byId("novelEditorTitle").textContent=novel?"উপন্যাস সম্পাদনা":"নতুন উপন্যাস";
+  byId("editingNovelId").value=novel?.id||"";
+  byId("novelTitle").value=novel?.title||"";
+  byId("novelAuthor").value=novel?.author_name||currentUser?.user_metadata?.display_name||"";
+  byId("novelGenre").value=novel?.genre||"";
+  byId("novelCover").value=novel?.cover_url||"";
+  byId("novelDescription").value=novel?.description||"";
+  hideNotice("novelMessage");byId("novelEditor").scrollIntoView({behavior:"smooth"});
+}
+function closeNovelForm(){byId("novelEditor").classList.add("hidden");}
+async function saveNovel(){
+  const title=byId("novelTitle").value.trim(),genre=byId("novelGenre").value.trim(),description=byId("novelDescription").value.trim();
+  const authorName=byId("novelAuthor").value.trim()||"লেখক",cover=byId("novelCover").value.trim(),editId=byId("editingNovelId").value;
+  if(!title){showNotice("novelMessage","উপন্যাসের নাম লিখুন।","error");return;}
+  if(cover&&!/^https?:\/\//i.test(cover)){showNotice("novelMessage","কভার ছবির URL https:// দিয়ে শুরু হতে হবে।","error");return;}
+  const {data:{user},error:userError}=await supabaseClient.auth.getUser();
+  if(userError||!user){showNotice("novelMessage","সেশন শেষ হয়েছে। আবার Login করুন।","error");return;}
+  const payload={title,genre,description,cover_url:cover||null};
+  try{
+    let result;
+    if(editId) result=await supabaseClient.from("novels").update(payload).eq("id",editId).eq("author_id",user.id);
+    else result=await supabaseClient.from("novels").insert({...payload,author_id:user.id,status:"draft"});
+    if(result.error)throw result.error;
+    showNotice("novelMessage",editId?"উপন্যাসের পরিবর্তন সেভ হয়েছে।":"উপন্যাস Draft হিসেবে সেভ হয়েছে। প্রকাশ করতে অধ্যায় ও প্রকাশনার ব্যবস্থা সম্পূর্ণ করুন।","success");
+    closeNovelForm();await loadMyNovels();
+  }catch(err){showNotice("novelMessage","সেভ করা যায়নি: "+err.message,"error");}
+}
+async function loadMyNovels(){
+  const area=byId("myNovels");area.textContent="আপনার উপন্যাস লোড হচ্ছে...";
+  const {data:{user},error:userError}=await supabaseClient.auth.getUser();
+  if(userError||!user){area.textContent="আবার Login করুন।";return;}
+  const {data,error}=await supabaseClient.from("novels").select("id,title,genre,description,cover_url,status,created_at").eq("author_id",user.id).order("created_at",{ascending:false});
+  if(error){area.textContent="উপন্যাস লোড করা যায়নি: "+error.message;return;}
+  if(!data?.length){area.innerHTML='<div class="empty">এখনও কোনো উপন্যাস নেই। “নতুন উপন্যাস” বাটনে চাপুন।</div>';return;}
+  area.innerHTML="<h3>আমার উপন্যাস ("+data.length+")</h3>";
+  data.forEach(n=>{
+    const row=document.createElement("div");row.className="novel-row";
+    const h=document.createElement("h3");h.textContent=n.title;
+    const p=document.createElement("p");p.textContent=(n.genre||"ধরন নেই")+" • "+(n.status||"draft");
+    const actions=document.createElement("div");actions.className="row-actions";
+    const edit=document.createElement("button");edit.className="small-btn";edit.textContent="Edit";edit.onclick=()=>openNovelForm(n);
+    const chapters=document.createElement("button");chapters.className="small-btn";chapters.textContent="অধ্যায়";chapters.onclick=()=>openChapterEditor(n);
+    const publish=document.createElement("button");publish.className="small-btn";publish.textContent=n.status==="published"?"Unpublish":"Publish";publish.onclick=()=>toggleNovelPublish(n.id,n.status);
+    const del=document.createElement("button");del.className="small-btn";del.textContent="Delete";del.onclick=()=>deleteNovel(n.id,n.title);
+    actions.append(edit,chapters,publish,del);row.append(h,p,actions);area.appendChild(row);
+  });
+}
+async function toggleNovelPublish(id,status){
+  const next=status==="published"?"draft":"published";
+  if(next==="published"){
+    const {count,error:countError}=await supabaseClient.from("chapters").select("id",{count:"exact",head:true}).eq("novel_id",id).eq("status","published");
+    if(countError){alert("অধ্যায় যাচাই করা যায়নি: "+countError.message);return;}
+    if(!count){alert("প্রকাশ করার আগে অন্তত একটি অধ্যায় Published করুন।");return;}
+  }
+  const {error}=await supabaseClient.from("novels").update({status:next}).eq("id",id).eq("author_id",currentUser.id);
+  if(error){alert("স্ট্যাটাস পরিবর্তন হয়নি: "+error.message);return;}
+  alert(next==="published"?"উপন্যাস প্রকাশিত হয়েছে।":"উপন্যাস Draft করা হয়েছে।");
+  await loadMyNovels();await loadPublicNovels();
+}
+async function deleteNovel(id,title){
+  if(!confirm('"'+title+'" উপন্যাসটি মুছে ফেলতে চান? এর অধ্যায়ও মুছে যাবে।'))return;
+  const {error}=await supabaseClient.from("novels").delete().eq("id",id).eq("author_id",currentUser.id);
+  if(error){alert("মুছে ফেলা যায়নি: "+error.message);return;}
+  loadMyNovels();
+}
+async function openChapterEditor(novel){
+  const area=byId("myNovels");
+  const box=document.createElement("div");box.className="panel";box.id="chapterEditor";
+  box.innerHTML='<h3>'+escapeHTML(novel.title)+' — অধ্যায় ব্যবস্থাপনা</h3>'+
+   '<input type="hidden" id="chapterNovelId" value="'+escapeAttr(novel.id)+'">'+
+   '<label>পর্ব নম্বর</label><input id="chapterNumber" class="field" type="number" min="1" value="1">'+
+   '<label>অধ্যায়ের শিরোনাম</label><input id="chapterTitle" class="field" placeholder="অধ্যায়ের নাম">'+
+   '<label>অধ্যায়ের লেখা</label><textarea id="chapterContent" class="field" placeholder="এখানে অধ্যায় লিখুন..."></textarea>'+
+   '<label>অবস্থা</label><select id="chapterStatus" class="field"><option value="draft">Draft</option><option value="published">Published</option></select>'+
+   '<button class="btn dark" id="saveChapterButton">অধ্যায় সেভ করুন</button><button class="btn light" id="closeChapterButton">বন্ধ করুন</button>'+
+   '<div id="chapterMessage" class="notice hidden"></div><div id="chapterList"></div>';
+  const old=byId("chapterEditor");if(old)old.remove();
+  area.appendChild(box);
+  byId("saveChapterButton").onclick=saveChapter;
+  byId("closeChapterButton").onclick=()=>box.remove();
+  await loadWriterChapters(novel.id);
+  box.scrollIntoView({behavior:"smooth"});
+}
+async function saveChapter(){
+  const novelId=byId("chapterNovelId").value,num=parseInt(byId("chapterNumber").value,10),title=byId("chapterTitle").value.trim(),content=byId("chapterContent").value.trim(),status=byId("chapterStatus").value;
+  if(!Number.isInteger(num)||num<1||!title||!content){showNotice("chapterMessage","সঠিক পর্ব নম্বর, শিরোনাম এবং অধ্যায়ের লেখা দিন।","error");return;}
+  const {data:{user},error:userError}=await supabaseClient.auth.getUser();
+  if(userError||!user){showNotice("chapterMessage","আবার Login করুন।","error");return;}
+  const {error}=await supabaseClient.from("chapters").insert({novel_id:novelId,author_id:user.id,chapter_number:num,title,content,status});
+  if(error){showNotice("chapterMessage","অধ্যায় সেভ হয়নি: "+error.message,"error");return;}
+  showNotice("chapterMessage","অধ্যায় সেভ হয়েছে।","success");
+  byId("chapterTitle").value="";byId("chapterContent").value="";
+  await loadWriterChapters(novelId);
+}
+async function loadWriterChapters(novelId){
+  const list=byId("chapterList");list.textContent="অধ্যায় লোড হচ্ছে...";
+  const {data,error}=await supabaseClient.from("chapters").select("id,chapter_number,title,status").eq("novel_id",novelId).order("chapter_number");
+  if(error){list.textContent=error.message;return;}
+  list.innerHTML="<h4 style='margin-top:14px'>আগের অধ্যায়</h4>";
+  if(!data?.length){list.insertAdjacentHTML("beforeend","<p>এখনও অধ্যায় নেই।</p>");return;}
+  data.forEach(ch=>{
+    const row=document.createElement("div");row.className="chapter-row";
+    const t=document.createElement("span");t.textContent="পর্ব "+ch.chapter_number+" — "+ch.title+" ("+ch.status+")";
+    const del=document.createElement("button");del.className="small-btn";del.textContent="Delete";
+    del.onclick=async()=>{if(!confirm("এই অধ্যায় মুছবেন?"))return;const r=await supabaseClient.from("chapters").delete().eq("id",ch.id).eq("author_id",currentUser.id);if(r.error)alert(r.error.message);else loadWriterChapters(novelId);};
+    row.append(t,del);list.appendChild(row);
+  });
+}
+async function logoutUser(){
+  const {error}=await supabaseClient.auth.signOut();
+  if(error){alert(error.message);return;}
+  currentUser=null;byId("writerDashboard").classList.add("hidden");byId("authPanel").classList.remove("hidden");switchAuth("login");showPage("home");
+}
+async function renderProfile(){
+  const box=byId("profileInfo");
+  if(!currentUser){box.textContent="প্রোফাইল দেখতে Login করুন।";return;}
+  const {data}=await supabaseClient.from("profiles").select("display_name,role").eq("id",currentUser.id).maybeSingle();
+  box.innerHTML="<p><strong>নাম:</strong> "+escapeHTML(data?.display_name||currentUser.user_metadata?.display_name||"লেখক")+"</p><p><strong>ইমেল:</strong> "+escapeHTML(currentUser.email)+"</p><p><strong>অ্যাকাউন্ট:</strong> "+escapeHTML(data?.role||"writer")+"</p>";
+}
+function initSupabase(){
+  if(!window.supabase?.createClient){
+    showNotice("authMessage","Supabase লাইব্রেরি লোড হয়নি। ইন্টারনেট সংযোগ পরীক্ষা করুন।","error");
     return;
   }
-
-  try {
-    const { data: { user }, error: userError } =
-      await supabase.auth.getUser();
-
-    if (userError || !user) {
-      alert("আবার Login করুন।");
-      return;
-    }
-
-    const { error } = await supabase.from("novels").insert({
-      author_id: user.id,
-      title: title,
-      genre: genre,
-      description: description,
-      status: "draft"
-    });
-
-    if (error) {
-      alert(error.message);
-      return;
-    }
-
-    alert("উপন্যাস সেভ হয়েছে!");
-
-    document.getElementById("novelTitle").value = "";
-    document.getElementById("novelGenre").value = "";
-    document.getElementById("novelDescription").value = "";
-
-    loadMyNovels();
-
-  } catch (err) {
-    alert(err.message);
+  try{
+    supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+    supabaseClient.auth.onAuthStateChange((_event,session)=>{currentUser=session?.user||null;});
+    loadPublicNovels();
+    restoreSession();
+  }catch(err){
+    console.error(err);
+    showNotice("authMessage","Supabase চালু করা যায়নি: "+err.message,"error");
   }
 }
-
-async function loadMyNovels() {
-  const area = document.getElementById("myNovels");
-  area.innerText = "লোড হচ্ছে...";
-
-  try {
-    const { data: { user }, error: userError } =
-      await supabase.auth.getUser();
-
-    if (userError || !user) {
-      area.innerText = "আবার Login করুন।";
-      return;
-    }
-
-    const { data, error } = await supabase
-      .from("novels")
-      .select("title, genre, status")
-      .eq("author_id", user.id);
-
-    if (error) {
-      area.innerText = error.message;
-      return;
-    }
-
-    area.innerHTML = "<h3>আমার উপন্যাস</h3>";
-
-    if (!data || data.length === 0) {
-      area.innerText = "এখনো কোনো উপন্যাস নেই।";
-      return;
-    }
-
-    data.forEach(novel => {
-      const item = document.createElement("div");
-      item.className = "novel-item";
-
-      const title = document.createElement("strong");
-      title.textContent = novel.title;
-
-      const details = document.createElement("p");
-      details.textContent =
-        (novel.genre || "ধরন নেই") + " — " + novel.status;
-
-      item.appendChild(title);
-      item.appendChild(details);
-      area.appendChild(item);
-    });
-
-  } catch (err) {
-    area.innerText = err.message;
-  }
-}
-
-async function logoutUser() {
-  const { error } = await supabase.auth.signOut();
-
-  if (error) {
-    alert(error.message);
-    return;
-  }
-
-  document.getElementById("writerDashboard").style.display = "none";
-  document.getElementById("auth").style.display = "grid";
-  document.getElementById("authMessage").innerText =
-    "আপনি Logout করেছেন।";
-}
+document.addEventListener("DOMContentLoaded",initSupabase);
 </script>
-
 </body>
 </html>
