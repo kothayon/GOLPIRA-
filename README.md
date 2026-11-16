@@ -1,1 +1,557 @@
-# GOLPIRA-
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#17152b">
+
+<title>GOLPIRA – বাংলা উপন্যাস ও গল্প</title>
+<meta name="description" content="GOLPIRA-তে পড়ুন বাংলা উপন্যাস ও গল্প। লিখুন এবং প্রকাশ করুন নিজের গল্প।">
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f7f5f2;
+  color: #242139;
+  line-height: 1.6;
+}
+
+header {
+  background: #17152b;
+  color: white;
+  padding: 24px 20px;
+}
+
+.logo {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  color: #f4c875;
+}
+
+.tag {
+  color: #ddd;
+  font-size: 14px;
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+  margin-top: 20px;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+}
+
+nav a:hover {
+  color: #f4c875;
+}
+
+.hero {
+  padding: 65px 20px;
+  text-align: center;
+  color: white;
+  background: linear-gradient(135deg, #252044, #57406d);
+}
+
+.hero h1 {
+  font-size: 32px;
+  margin-bottom: 15px;
+}
+
+.hero p {
+  color: #eee;
+}
+
+.btn {
+  display: inline-block;
+  margin-top: 22px;
+  padding: 14px 28px;
+  background: #f4c875;
+  color: #211b32;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+section {
+  padding: 30px 20px;
+}
+
+h2 {
+  font-size: 23px;
+  margin-bottom: 18px;
+}
+
+.search {
+  width: 100%;
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  font-size: 16px;
+}
+
+.categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.cat {
+  background: white;
+  padding: 12px 18px;
+  border-radius: 30px;
+  border: 1px solid #eee;
+}
+
+.empty {
+  background: white;
+  border-radius: 16px;
+  padding: 35px 20px;
+  text-align: center;
+  color: #777;
+}
+
+#auth, #writerDashboard {
+  max-width: 650px;
+  margin: 35px auto;
+  padding: 25px;
+  background: white;
+  border: 1px solid #e8e2d8;
+  border-radius: 20px;
+  box-shadow: 0 12px 35px rgba(30,25,50,.09);
+}
+
+#auth {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 14px;
+}
+
+#auth h2, #auth p, #auth hr {
+  grid-column: 1 / -1;
+}
+
+#auth input, #writerDashboard input,
+#writerDashboard textarea {
+  width: 100%;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid #ded8e8;
+  border-radius: 10px;
+  font-size: 16px;
+  background: #faf9fc;
+}
+
+#writerDashboard textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+#auth button, #writerDashboard button {
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background: #211b32;
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#auth button:hover, #writerDashboard button:hover {
+  background: #57406d;
+}
+
+#auth hr {
+  width: 100%;
+  border: 0;
+  border-top: 1px solid #eee;
+}
+
+#auth p {
+  overflow-wrap: anywhere;
+  color: #51466a;
+}
+
+#writerDashboard {
+  display: none;
+}
+
+#writerDashboard button {
+  margin: 6px 0;
+}
+
+#novelForm {
+  margin-top: 20px;
+}
+
+#novelForm input, #novelForm textarea {
+  margin-bottom: 12px;
+}
+
+#myNovels {
+  margin-top: 20px;
+  overflow-wrap: anywhere;
+}
+
+.novel-item {
+  padding: 12px;
+  margin: 10px 0;
+  background: #f7f5f2;
+  border-radius: 10px;
+}
+
+footer {
+  background: #17152b;
+  color: white;
+  text-align: center;
+  padding: 28px 18px;
+  font-size: 14px;
+}
+
+@media(max-width:600px) {
+  header {
+    padding: 20px 16px;
+  }
+
+  .hero {
+    padding: 48px 18px;
+  }
+
+  .hero h1 {
+    font-size: 26px;
+  }
+
+  #auth, #writerDashboard {
+    margin: 25px 14px;
+    padding: 20px;
+  }
+
+  #auth {
+    grid-template-columns: 1fr;
+  }
+
+  section {
+    padding: 25px 16px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">GOLPIRA</div>
+  <div class="tag">একটি গল্প, হাজারো অনুভূতি</div>
+  <nav>
+    <a href="#">হোম</a>
+    <a href="#novels">উপন্যাস</a>
+    <a href="#categories">বিভাগ</a>
+    <a href="#auth">লেখক</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <h1>গল্পের পাতায় হারিয়ে যাও</h1>
+  <p>পড়ুন প্রিয় উপন্যাস। লিখুন নিজের গল্প।<br>
+  ছড়িয়ে দিন আপনার কল্পনার জগৎ।</p>
+  <a class="btn" href="#novels">গল্প পড়ুন</a>
+</div>
+
+<section>
+  <input class="search" type="search"
+  placeholder="উপন্যাস বা লেখকের নাম খুঁজুন...">
+</section>
+
+<section id="categories">
+  <h2>গল্পের বিভাগ</h2>
+  <div class="categories">
+    <div class="cat">📚 উপন্যাস</div>
+    <div class="cat">❤️ প্রেম</div>
+    <div class="cat">💔 বিরহ</div>
+    <div class="cat">🕵️ রহস্য</div>
+    <div class="cat">🔥 থ্রিলার</div>
+    <div class="cat">📖 সামাজিক</div>
+    <div class="cat">✨ রোমান্টিক</div>
+  </div>
+</section>
+
+<section id="novels">
+  <h2>জনপ্রিয় উপন্যাস</h2>
+  <div class="empty">
+    📚<br>
+    এখনও কোনো উপন্যাস প্রকাশিত হয়নি।
+  </div>
+</section>
+
+<section id="auth">
+  <h2>Writer Account</h2>
+
+  <input id="signupName" type="text" placeholder="Your Name">
+  <input id="signupEmail" type="email" placeholder="Email Address">
+  <input id="signupPassword" type="password" placeholder="Create Password">
+
+  <button type="button" onclick="registerUser()">Create Account</button>
+
+  <hr>
+
+  <input id="loginEmail" type="email" placeholder="Email Address">
+  <input id="loginPassword" type="password" placeholder="Password">
+
+  <button type="button" onclick="loginUser()">Login</button>
+
+  <p id="authMessage"></p>
+</section>
+
+<section id="writerDashboard">
+  <h2>GOLPIRA Writer Dashboard</h2>
+  <p id="writerName">স্বাগতম!</p>
+
+  <button type="button" onclick="showNovelForm()">
+    ➕ নতুন উপন্যাস লিখুন
+  </button>
+
+  <button type="button" onclick="loadMyNovels()">
+    📚 আমার উপন্যাস
+  </button>
+
+  <button type="button" onclick="logoutUser()">
+    Logout
+  </button>
+
+  <div id="novelForm" style="display:none;">
+    <h3>নতুন উপন্যাস</h3>
+
+    <input id="novelTitle" placeholder="উপন্যাসের নাম">
+    <input id="novelGenre" placeholder="উপন্যাসের ধরন">
+
+    <textarea id="novelDescription"
+    placeholder="উপন্যাসের বিবরণ"></textarea>
+
+    <button type="button" onclick="saveNovel()">
+      Save Novel
+    </button>
+  </div>
+
+  <div id="myNovels"></div>
+</section>
+
+<footer>
+  <div class="logo">GOLPIRA</div>
+  একটি গল্প, হাজারো অনুভূতি।
+  <br>© 2026 GOLPIRA. All Rights Reserved.
+  <br>Owned and managed by Arham Ahmed Nil.
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "https://braregeyqrprrhmqdddc.supabase.co";
+const SUPABASE_KEY = "sb_publishable_3bQbus5riktWZqq60AZ3mA_yJMXnEKk";
+
+const supabase = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+async function registerUser() {
+  const name = document.getElementById("signupName").value.trim();
+  const email = document.getElementById("signupEmail").value.trim();
+  const password = document.getElementById("signupPassword").value;
+  const message = document.getElementById("authMessage");
+
+  if (!name || !email || password.length < 6) {
+    message.innerText = "নাম, ইমেল এবং কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড দিন।";
+    return;
+  }
+
+  message.innerText = "অ্যাকাউন্ট তৈরি হচ্ছে...";
+
+  try {
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { display_name: name }
+      }
+    });
+
+    message.innerText = error
+      ? error.message
+      : "Registration সফল। ইমেল চেক করে অ্যাকাউন্ট নিশ্চিত করুন।";
+
+  } catch (err) {
+    message.innerText = "সমস্যা: " + err.message;
+  }
+}
+
+async function loginUser() {
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPassword").value;
+  const message = document.getElementById("authMessage");
+
+  if (!email || !password) {
+    message.innerText = "ইমেল এবং পাসওয়ার্ড লিখুন।";
+    return;
+  }
+
+  message.innerText = "Login হচ্ছে...";
+
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) {
+      message.innerText = error.message;
+      return;
+    }
+
+    document.getElementById("auth").style.display = "none";
+    document.getElementById("writerDashboard").style.display = "block";
+
+    document.getElementById("writerName").innerText =
+      "স্বাগতম, " +
+      (data.user.user_metadata.display_name || "লেখক");
+
+    loadMyNovels();
+
+  } catch (err) {
+    message.innerText = "সমস্যা: " + err.message;
+  }
+}
+
+function showNovelForm() {
+  document.getElementById("novelForm").style.display = "block";
+}
+
+async function saveNovel() {
+  const title = document.getElementById("novelTitle").value.trim();
+  const genre = document.getElementById("novelGenre").value.trim();
+  const description =
+    document.getElementById("novelDescription").value.trim();
+
+  if (!title) {
+    alert("উপন্যাসের নাম লিখুন।");
+    return;
+  }
+
+  try {
+    const { data: { user }, error: userError } =
+      await supabase.auth.getUser();
+
+    if (userError || !user) {
+      alert("আবার Login করুন।");
+      return;
+    }
+
+    const { error } = await supabase.from("novels").insert({
+      author_id: user.id,
+      title: title,
+      genre: genre,
+      description: description,
+      status: "draft"
+    });
+
+    if (error) {
+      alert(error.message);
+      return;
+    }
+
+    alert("উপন্যাস সেভ হয়েছে!");
+
+    document.getElementById("novelTitle").value = "";
+    document.getElementById("novelGenre").value = "";
+    document.getElementById("novelDescription").value = "";
+
+    loadMyNovels();
+
+  } catch (err) {
+    alert(err.message);
+  }
+}
+
+async function loadMyNovels() {
+  const area = document.getElementById("myNovels");
+  area.innerText = "লোড হচ্ছে...";
+
+  try {
+    const { data: { user }, error: userError } =
+      await supabase.auth.getUser();
+
+    if (userError || !user) {
+      area.innerText = "আবার Login করুন।";
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from("novels")
+      .select("title, genre, status")
+      .eq("author_id", user.id);
+
+    if (error) {
+      area.innerText = error.message;
+      return;
+    }
+
+    area.innerHTML = "<h3>আমার উপন্যাস</h3>";
+
+    if (!data || data.length === 0) {
+      area.innerText = "এখনো কোনো উপন্যাস নেই।";
+      return;
+    }
+
+    data.forEach(novel => {
+      const item = document.createElement("div");
+      item.className = "novel-item";
+
+      const title = document.createElement("strong");
+      title.textContent = novel.title;
+
+      const details = document.createElement("p");
+      details.textContent =
+        (novel.genre || "ধরন নেই") + " — " + novel.status;
+
+      item.appendChild(title);
+      item.appendChild(details);
+      area.appendChild(item);
+    });
+
+  } catch (err) {
+    area.innerText = err.message;
+  }
+}
+
+async function logoutUser() {
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  document.getElementById("writerDashboard").style.display = "none";
+  document.getElementById("auth").style.display = "grid";
+  document.getElementById("authMessage").innerText =
+    "আপনি Logout করেছেন।";
+}
+</script>
+
+</body>
+</html>
