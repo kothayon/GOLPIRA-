@@ -190,6 +190,8 @@ label{display:block;font-weight:600;font-size:14px}
   </div>
   <div id="novelEditor" class="hidden">
    <h3 id="novelEditorTitle">নতুন উপন্যাস</h3>
+    <label>অথবা সরাসরি কভার ছবি Upload করুন</label>
+<input id="novelCoverFile" class="field" type="file" accept="image/*">
    <input type="hidden" id="editingNovelId">
    <label>উপন্যাসের নাম</label><input id="novelTitle" class="field" placeholder="উপন্যাসের নাম">
    <label>লেখকের নাম</label><input id="novelAuthor" class="field" placeholder="লেখকের নাম">
@@ -427,6 +429,30 @@ async function saveNovel(){
   if(cover&&!/^https?:\/\//i.test(cover)){showNotice("novelMessage","কভার ছবির URL https:// দিয়ে শুরু হতে হবে।","error");return;}
   const {data:{user},error:userError}=await supabaseClient.auth.getUser();
   if(userError||!user){showNotice("novelMessage","সেশন শেষ হয়েছে। আবার Login করুন।","error");return;}
+  let finalCoverUrl = cover_url;
+
+const coverFile = byId("novelCoverFile").files[0];
+
+if (coverFile) {
+  const fileExt = coverFile.name.split(".").pop();
+  const filePath = currentUser.id + "/" + Date.now() + "." + fileExt;
+
+  const { data: uploadData, error: uploadError } =
+    await supabaseClient.storage
+      .from("novel-covers")
+      .upload(filePath, coverFile);
+
+  if (uploadError) {
+    showNotice("novelMessage", "ছবি আপলোড হয়নি: " + uploadError.message, "error");
+    return;
+  }
+
+  const { data: publicData } = supabaseClient.storage
+    .from("novel-covers")
+    .getPublicUrl(uploadData.path);
+
+  finalCoverUrl = publicData.publicUrl;
+}
   const payload={title,genre,description,cover_url:cover||null};
   try{
     let result;
