@@ -180,6 +180,12 @@ label{display:block;font-weight:600;font-size:14px}
    <label for="signupPassword">পাসওয়ার্ড</label><input id="signupPassword" class="field" type="password" autocomplete="new-password" placeholder="কমপক্ষে ৬ অক্ষর">
    <button id="signupButton" class="btn dark" style="width:100%" onclick="registerUser()">Create Account</button>
   </div>
+   <div id="passwordResetForm" class="hidden">
+  <h3>নতুন পাসওয়ার্ড সেট করুন</h3>
+  <label>নতুন পাসওয়ার্ড</label>
+  <input id="newPassword" class="field" type="password" placeholder="নতুন পাসওয়ার্ড" autocomplete="new-password">
+  <button class="btn dark" style="width:100%" onclick="updatePassword()">পাসওয়ার্ড পরিবর্তন করুন</button>
+   </div>
   <div id="authMessage" class="notice hidden" role="status"></div>
  </div>
  <div id="writerDashboard" class="panel hidden">
