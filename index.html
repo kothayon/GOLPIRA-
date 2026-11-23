@@ -429,10 +429,8 @@ async function ensureProfile(displayName){
     if(insertError)console.warn("Profile create:",insertError.message);
   }
 }
-
 async function showDashboard(){
   byId("authPanel").classList.add("hidden");
-
   byId("writerDashboard").classList.add("hidden");
   byId("adminDashboard").classList.add("hidden");
 
@@ -442,11 +440,14 @@ async function showDashboard(){
     .eq("id",currentUser.id)
     .maybeSingle();
 
-  if(error){
-    console.error("Profile error:",error.message);
-    alert("Profile load failed: "+error.message);
-    return;
-  }
+  alert(
+    "Login Email: "+currentUser.email+
+    "\nUser ID: "+currentUser.id+
+    "\nProfile Role: "+(profile?.role || "NOT FOUND")+
+    "\nError: "+(error?.message || "None")
+  );
+
+  if(error) return;
 
   if(profile?.role === "admin"){
     byId("adminDashboard").classList.remove("hidden");
@@ -454,9 +455,7 @@ async function showDashboard(){
   }else{
     byId("writerDashboard").classList.remove("hidden");
   }
-}
-
-
+} 
   byId("writerName").textContent =
     "স্বাগতম, "+(currentUser?.user_metadata?.display_name||"লেখক");
 
