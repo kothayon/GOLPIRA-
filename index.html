@@ -452,6 +452,36 @@ async function showDashboard(){
   loadMyNovels();
   showPage("writer");
 }
+  async function loadPendingImports(){
+  const area=byId("pendingImportsList");
+  area.textContent="Pending গল্প লোড হচ্ছে...";
+
+  const {data,error}=await supabaseClient
+    .from("pending_imports")
+    .select("id,import_type,source_name,source_url,title,author_name,status,created_at")
+    .eq("status","pending")
+    .order("created_at",{ascending:false});
+
+  if(error){
+    area.textContent="লোড করা যায়নি: "+error.message;
+    return;
+  }
+
+  if(!data?.length){
+    area.textContent="এখন কোনো Pending গল্প নেই।";
+    return;
+  }
+
+  area.innerHTML=data.map(item=>`
+    <div class="novel-row">
+      <h3>${escapeHTML(item.title)}</h3>
+      <p>লেখক: ${escapeHTML(item.author_name||"অজানা")}</p>
+      <p>ধরন: ${escapeHTML(item.import_type)}</p>
+      <p>উৎস: ${escapeHTML(item.source_name||"উল্লেখ নেই")}</p>
+      <p>অবস্থা: Pending</p>
+    </div>
+  `).join("");
+  }
 function openNovelForm(novel=null){
   byId("novelEditor").classList.remove("hidden");
   byId("novelEditorTitle").textContent=novel?"উপন্যাস সম্পাদনা":"নতুন উপন্যাস";
