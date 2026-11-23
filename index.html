@@ -420,19 +420,13 @@ async function loginUser(){
   }catch(err){showNotice("authMessage",friendlyAuthError(err.message),"error");}
   finally{btn.disabled=false;btn.textContent="Login করুন";}
 }
-async function ensureProfile(displayName){
-  if(!currentUser)return;
-  const {data,error}=await supabaseClient.from("profiles").select("id,display_name,role").eq("id",currentUser.id).maybeSingle();
-  if(error){console.warn("Profile lookup:",error.message);return;}
-  if(!data){
-    const {error:insertError}=await supabaseClient.from("profiles").insert({id:currentUser.id,display_name:displayName,role:"writer"});
-    if(insertError)console.warn("Profile create:",insertError.message);
-  }
-}
+
 async function showDashboard(){
   byId("authPanel").classList.add("hidden");
   byId("writerDashboard").classList.add("hidden");
-  byId("adminDashboard").classList.add("hidden");
+
+  const adminPanel = byId("adminDashboard");
+  if(adminPanel) adminPanel.classList.add("hidden");
 
   const {data:profile,error} = await supabaseClient
     .from("profiles")
@@ -440,17 +434,26 @@ async function showDashboard(){
     .eq("id",currentUser.id)
     .maybeSingle();
 
-  alert(
-    "Login Email: "+currentUser.email+
-    "\nUser ID: "+currentUser.id+
-    "\nProfile Role: "+(profile?.role || "NOT FOUND")+
-    "\nError: "+(error?.message || "None")
-  );
+  if(error){
+    alert("Profile Error: "+error.message);
+    return;
+  }
 
-  if(error) return;
+  if(profile?.role === "admin" && adminPanel){
+    adminPanel.classList.remove("hidden");
+    await loadPendingImports();
+  }else{
+    byId("writerDashboard").classList.remove("hidden");
+    byId("writerName").textContent =
+      "স্বাগতম, "+(currentUser?.user_metadata?.display_name||"লেখক");
 
-  if(profile?.role === "admin"){
-    byId("adminDashboard").classList.remove("hidden");
+    hideNotice("authMessage");
+    await loadMyNovels();
+  }
+
+  showPage("writer");
+}
+
     await loadPendingImports();
   }else{
     byId("writerDashboard").classList.remove("hidden");
