@@ -450,23 +450,6 @@ async function showDashboard(){
     await loadMyNovels();
   }
 }
-
-  
-  showPage("writer");
-}
-
-    await loadPendingImports();
-  }else{
-    byId("writerDashboard").classList.remove("hidden");
-  }
-} 
-  byId("writerName").textContent =
-    "স্বাগতম, "+(currentUser?.user_metadata?.display_name||"লেখক");
-
-  hideNotice("authMessage");
-  loadMyNovels();
-  showPage("writer");
-}
   
 async function restoreSession(){
   const {data,error}=await supabaseClient.auth.getSession();
