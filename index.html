@@ -601,7 +601,15 @@ function initSupabase(){
   }
   try{
     supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-    supabaseClient.auth.onAuthStateChange((_event,session)=>{currentUser=session?.user||null;});
+    supabaseClient.auth.onAuthStateChange((event,session)=>{
+  currentUser=session?.user||null;
+  if(event==="PASSWORD_RECOVERY"){
+    showPage("writer");
+    byId("loginForm").classList.add("hidden");
+    byId("signupForm").classList.add("hidden");
+    byId("passwordResetForm").classList.remove("hidden");
+  }
+});
     loadPublicNovels();
     restoreSession();
   }catch(err){
