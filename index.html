@@ -490,6 +490,41 @@ area.innerHTML=data.map(item=>`
 `).join("");
 
   }
+  
+async function approvePendingImport(id){
+  if(!confirm("এই গল্পটি প্রকাশ করতে চান?")) return;
+
+  const {data,error}=await supabaseClient.rpc(
+    "approve_pending_import",
+    {pending_id:id}
+  );
+
+  if(error){
+    alert("Approve করা যায়নি: "+error.message);
+    return;
+  }
+
+  alert("গল্প সফলভাবে প্রকাশ হয়েছে!");
+  await loadPendingImports();
+}
+
+async function rejectPendingImport(id){
+  if(!confirm("এই গল্পটি Reject করতে চান?")) return;
+
+  const {data,error}=await supabaseClient.rpc(
+    "reject_pending_import",
+    {pending_id:id}
+  );
+
+  if(error){
+    alert("Reject করা যায়নি: "+error.message);
+    return;
+  }
+
+  alert("গল্প Reject হয়েছে।");
+  await loadPendingImports();
+}
+  
 function openNovelForm(novel=null){
   byId("novelEditor").classList.remove("hidden");
   byId("novelEditorTitle").textContent=novel?"উপন্যাস সম্পাদনা":"নতুন উপন্যাস";
