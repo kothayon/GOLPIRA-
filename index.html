@@ -452,6 +452,29 @@ async function showDashboard(){
   loadMyNovels();
   showPage("writer");
 }
+  
+async function restoreSession(){
+  const {data,error}=await supabaseClient.auth.getSession();
+
+  if(error){
+    console.error("Session error:",error.message);
+    return;
+  }
+
+  currentUser=data.session?.user || null;
+
+  if(currentUser){
+    await ensureProfile(
+      currentUser.user_metadata?.display_name || ""
+    );
+    await showDashboard();
+  }else{
+    byId("authPanel").classList.remove("hidden");
+    byId("writerDashboard").classList.add("hidden");
+    byId("adminDashboard").classList.add("hidden");
+  }
+}
+  
   async function loadPendingImports(){
   const area=byId("pendingImportsList");
   area.textContent="Pending গল্প লোড হচ্ছে...";
