@@ -578,6 +578,22 @@ async function renderProfile(){
   const {data}=await supabaseClient.from("profiles").select("display_name,role").eq("id",currentUser.id).maybeSingle();
   box.innerHTML="<p><strong>নাম:</strong> "+escapeHTML(data?.display_name||currentUser.user_metadata?.display_name||"লেখক")+"</p><p><strong>ইমেল:</strong> "+escapeHTML(currentUser.email)+"</p><p><strong>অ্যাকাউন্ট:</strong> "+escapeHTML(data?.role||"writer")+"</p>";
 }
+  async function updatePassword(){
+  const password=byId("newPassword").value;
+  if(password.length<6){
+    showNotice("authMessage","পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।","error");
+    return;
+  }
+  try{
+    const {error}=await supabaseClient.auth.updateUser({password});
+    if(error)throw error;
+    showNotice("authMessage","নতুন পাসওয়ার্ড সফলভাবে পরিবর্তন হয়েছে।","success");
+    byId("passwordResetForm").classList.add("hidden");
+    byId("loginForm").classList.remove("hidden");
+  }catch(err){
+    showNotice("authMessage","সমস্যা: "+err.message,"error");
+  }
+  }
 function initSupabase(){
   if(!window.supabase?.createClient){
     showNotice("authMessage","Supabase লাইব্রেরি লোড হয়নি। ইন্টারনেট সংযোগ পরীক্ষা করুন।","error");
