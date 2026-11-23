@@ -472,15 +472,23 @@ async function showDashboard(){
     return;
   }
 
-  area.innerHTML=data.map(item=>`
-    <div class="novel-row">
-      <h3>${escapeHTML(item.title)}</h3>
-      <p>লেখক: ${escapeHTML(item.author_name||"অজানা")}</p>
-      <p>ধরন: ${escapeHTML(item.import_type)}</p>
-      <p>উৎস: ${escapeHTML(item.source_name||"উল্লেখ নেই")}</p>
-      <p>অবস্থা: Pending</p>
-    </div>
-  `).join("");
+  
+area.innerHTML=data.map(item=>`
+  <div class="novel-row">
+    <h3>${escapeHTML(item.title)}</h3>
+    <p>লেখক: ${escapeHTML(item.author_name||"অজানা")}</p>
+    <p>ধরন: ${escapeHTML(item.import_type)}</p>
+    <p>উৎস: ${escapeHTML(item.source_name||"উল্লেখ নেই")}</p>
+    <p>অবস্থা: Pending</p>
+    <button type="button" onclick="approvePendingImport('${item.id}')">
+      Approve
+    </button>
+    <button type="button" onclick="rejectPendingImport('${item.id}')">
+      Reject
+    </button>
+  </div>
+`).join("");
+
   }
 function openNovelForm(novel=null){
   byId("novelEditor").classList.remove("hidden");
