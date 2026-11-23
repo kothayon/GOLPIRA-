@@ -429,9 +429,12 @@ async function ensureProfile(displayName){
     if(insertError)console.warn("Profile create:",insertError.message);
   }
 }
+
 async function showDashboard(){
   byId("authPanel").classList.add("hidden");
-  byId("writerDashboard").classList.remove("hidden");
+
+  byId("writerDashboard").classList.add("hidden");
+  byId("adminDashboard").classList.add("hidden");
 
   const {data:profile,error} = await supabaseClient
     .from("profiles")
@@ -439,11 +442,20 @@ async function showDashboard(){
     .eq("id",currentUser.id)
     .maybeSingle();
 
-  if(!error && profile?.role === "admin"){
-    byId("adminDashboard").classList.remove("hidden");
-  }else{
-    byId("adminDashboard").classList.add("hidden");
+  if(error){
+    console.error("Profile error:",error.message);
+    alert("Profile load failed: "+error.message);
+    return;
   }
+
+  if(profile?.role === "admin"){
+    byId("adminDashboard").classList.remove("hidden");
+    await loadPendingImports();
+  }else{
+    byId("writerDashboard").classList.remove("hidden");
+  }
+}
+
 
   byId("writerName").textContent =
     "স্বাগতম, "+(currentUser?.user_metadata?.display_name||"লেখক");
