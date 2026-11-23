@@ -424,9 +424,7 @@ async function loginUser(){
 async function showDashboard(){
   byId("authPanel").classList.add("hidden");
   byId("writerDashboard").classList.add("hidden");
-
-  const adminPanel = byId("adminDashboard");
-  if(adminPanel) adminPanel.classList.add("hidden");
+  byId("adminDashboard").classList.add("hidden");
 
   const {data:profile,error} = await supabaseClient
     .from("profiles")
@@ -439,18 +437,21 @@ async function showDashboard(){
     return;
   }
 
-  if(profile?.role === "admin" && adminPanel){
-    adminPanel.classList.remove("hidden");
+  showPage("writer");
+
+  if(profile?.role === "admin"){
+    byId("adminDashboard").classList.remove("hidden");
     await loadPendingImports();
   }else{
     byId("writerDashboard").classList.remove("hidden");
     byId("writerName").textContent =
       "স্বাগতম, "+(currentUser?.user_metadata?.display_name||"লেখক");
-
     hideNotice("authMessage");
     await loadMyNovels();
   }
+}
 
+  
   showPage("writer");
 }
 
