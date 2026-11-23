@@ -376,6 +376,22 @@ function friendlyAuthError(message){
   if(/password should be at least/i.test(message))return "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।";
   return message;
 }
+  async function forgotPassword(){
+  const email=byId("loginEmail").value.trim();
+  if(!email){
+    showNotice("authMessage","আগে আপনার ইমেল লিখুন।","error");
+    return;
+  }
+  try{
+    const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{
+      redirectTo:location.origin+location.pathname
+    });
+    if(error)throw error;
+    showNotice("authMessage","পাসওয়ার্ড রিসেট লিংক আপনার ইমেলে পাঠানো হয়েছে।","success");
+  }catch(err){
+    showNotice("authMessage","সমস্যা: "+err.message,"error");
+  }
+  }
 async function loginUser(){
   if(!supabaseClient){showNotice("authMessage","Supabase সংযোগ হয়নি। ইন্টারনেট বা CDN সংযোগ পরীক্ষা করুন।","error");return;}
   const email=byId("loginEmail").value.trim(),password=byId("loginPassword").value;
