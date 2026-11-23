@@ -429,17 +429,28 @@ async function ensureProfile(displayName){
     if(insertError)console.warn("Profile create:",insertError.message);
   }
 }
-function showDashboard(){
+async function showDashboard(){
   byId("authPanel").classList.add("hidden");
   byId("writerDashboard").classList.remove("hidden");
-  byId("writerName").textContent="স্বাগতম, "+(currentUser?.user_metadata?.display_name||"লেখক");
-  hideNotice("authMessage");loadMyNovels();showPage("writer");
-}
-async function restoreSession(){
-  if(!supabaseClient)return;
-  const {data,error}=await supabaseClient.auth.getSession();
-  if(error){console.warn(error.message);return;}
-  if(data.session){currentUser=data.session.user;showDashboard();}
+
+  const {data:profile,error} = await supabaseClient
+    .from("profiles")
+    .select("role")
+    .eq("id",currentUser.id)
+    .maybeSingle();
+
+  if(!error && profile?.role === "admin"){
+    byId("adminDashboard").classList.remove("hidden");
+  }else{
+    byId("adminDashboard").classList.add("hidden");
+  }
+
+  byId("writerName").textContent =
+    "স্বাগতম, "+(currentUser?.user_metadata?.display_name||"লেখক");
+
+  hideNotice("authMessage");
+  loadMyNovels();
+  showPage("writer");
 }
 function openNovelForm(novel=null){
   byId("novelEditor").classList.remove("hidden");
