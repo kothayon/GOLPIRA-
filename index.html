@@ -200,7 +200,31 @@ label{display:block;font-weight:600;font-size:14px}
     <label>অথবা সরাসরি কভার ছবি Upload করুন</label>
 <input id="novelCoverFile" class="field" type="file" accept="image/*">
    <input type="hidden" id="editingNovelId">
-   <label>উপন্যাসের নাম</label><input id="novelTitle" class="field" placeholder="উপন্যাসের নাম">
+   <label>গল্পে Episode আছে?</label>
+<select id="hasEpisodes" class="field" onchange="handleEpisodeChoice()">
+<option value="no">না — সাধারণ গল্প</option>
+<option value="yes">হ্যাঁ — Episode আছে</option>
+</select>
+
+<div id="episodeModeBox" class="hidden">
+<label>নতুন নাকি পুরোনো গল্প?</label>
+<select id="episodeMode" class="field" onchange="handleEpisodeMode()">
+<option value="new">নতুন গল্প</option>
+<option value="old">পুরোনো গল্পের Episode</option>
+</select>
+</div>
+
+<div id="oldStoryPicker" class="hidden">
+<label>আপনার শেষ ৩টি গল্প</label>
+<div id="recentStorySuggestions"></div>
+<label>নিজের পুরোনো গল্প সার্চ করুন</label>
+<input id="oldStorySearch" class="field" placeholder="গল্পের নাম লিখুন..." oninput="searchOwnStories()">
+<div id="oldStorySearchResults"></div>
+<input type="hidden" id="selectedOldStoryId">
+</div>
+
+<label>উপন্যাসের নাম</label>
+<input id="novelTitle" class="field" placeholder="উপন্যাসের নাম">
    <label>লেখকের নাম</label><input id="novelAuthor" class="field" placeholder="লেখকের নাম">
    <label>ধরন / বিভাগ</label><input id="novelGenre" class="field" placeholder="যেমন: প্রেম, রহস্য, থ্রিলার">
     <label>উপন্যাসের Privacy নির্বাচন করুন</label>
