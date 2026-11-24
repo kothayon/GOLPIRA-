@@ -619,6 +619,135 @@ function openNovelForm(novel=null){
   byId("novelDescription").value=novel?.description||"";
   hideNotice("novelMessage");byId("novelEditor").scrollIntoView({behavior:"smooth"});
 }
+  
+async function handleEpisodeChoice(){
+  const yes = byId("hasEpisodes").value === "yes";
+  byId("episodeModeBox").classList.toggle("hidden", !yes);
+  byId("oldStoryPicker").classList.toggle(
+    "hidden",
+    !yes || byId("episodeMode").value !== "old"
+  );
+
+  if(yes && byId("episodeMode").value === "old"){
+    await loadRecentOwnStories();
+  }
+}
+
+async function handleEpisodeMode(){
+  const old = byId("episodeMode").value === "old";
+  byId("oldStoryPicker").classList.toggle("hidden", !old);
+
+  if(old) await loadRecentOwnStories();
+}
+
+async function renderOwnStoryChoices(rows, targetId){
+  const target = byId(targetId);
+  target.innerHTML = "";
+
+  if(!rows || rows.length === 0){
+    target.textContent = "আপনার নিজের কোনো গল্প পাওয়া যায়নি।";
+    return;
+  }
+
+  rows.forEach(novel => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "small-btn";
+    button.style.margin = "5px";
+    button.textContent = novel.title;
+
+    button.onclick = async () => {
+      const {data:{user}} = await supabaseClient.auth.getUser();
+      if(!user) return;
+
+      const {data: chapters, error} = await supabaseClient
+        .from("chapters")
+        .select("chapter_number")
+        .eq("novel_id", novel.id)
+        .order("chapter_number");
+
+      if(error){
+        alert("Episode লোড হয়নি: " + error.message);
+        return;
+      }
+
+      const used = (chapters || []).map(c => Number(c.chapter_number));
+      const next = used.length ? Math.max(...used) + 1 : 1;
+
+      byId("selectedOldStoryId").value = novel.id;
+
+      alert(
+        "গল্প: " + novel.title +
+        "\nআগের Episode: " + (used.length ? used.join(", ") : "নেই") +
+        "\nপরবর্তী Episode: " + next
+      );
+
+      const selected = {
+        id: novel.id,
+        title: novel.title
+      };
+
+      await openChapterEditor(selected);
+    };
+
+    target.appendChild(button);
+  });
+}
+
+async function loadRecentOwnStories(){
+  const target = byId("recentStorySuggestions");
+  target.textContent = "গল্প লোড হচ্ছে...";
+
+  const {data:{user}} = await supabaseClient.auth.getUser();
+
+  if(!user){
+    target.textContent = "আগে Login করুন।";
+    return;
+  }
+
+  const {data, error} = await supabaseClient
+    .from("novels")
+    .select("id,title,created_at")
+    .eq("author_id", user.id)
+    .order("created_at", {ascending:false})
+    .limit(3);
+
+  if(error){
+    target.textContent = "গল্প লোড হয়নি: " + error.message;
+    return;
+  }
+
+  await renderOwnStoryChoices(data, "recentStorySuggestions");
+}
+
+async function searchOwnStories(){
+  const query = byId("oldStorySearch").value.trim();
+  const target = byId("oldStorySearchResults");
+
+  if(query.length < 2){
+    target.textContent = "কমপক্ষে ২টি অক্ষর লিখুন।";
+    return;
+  }
+
+  const {data:{user}} = await supabaseClient.auth.getUser();
+  if(!user) return;
+
+  const {data, error} = await supabaseClient
+    .from("novels")
+    .select("id,title,created_at")
+    .eq("author_id", user.id)
+    .ilike("title", "%" + query + "%")
+    .order("created_at", {ascending:false})
+    .limit(20);
+
+  if(error){
+    target.textContent = "সার্চ করা যায়নি: " + error.message;
+    return;
+  }
+
+  await renderOwnStoryChoices(data, "oldStorySearchResults");
+}
+  
 function closeNovelForm(){byId("novelEditor").classList.add("hidden");}
 async function saveNovel(){
   const title=byId("novelTitle").value.trim(),genre=byId("novelGenre").value.trim(),description=byId("novelDescription").value.trim();
