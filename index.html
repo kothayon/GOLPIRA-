@@ -1028,9 +1028,51 @@ async function logoutUser(){
 }
 async function renderProfile(){
   const box=byId("profileInfo");
-  if(!currentUser){box.textContent="প্রোফাইল দেখতে Login করুন।";return;}
-  const {data}=await supabaseClient.from("profiles").select("display_name,role").eq("id",currentUser.id).maybeSingle();
-  box.innerHTML="<p><strong>নাম:</strong> "+escapeHTML(data?.display_name||currentUser.user_metadata?.display_name||"লেখক")+"</p><p><strong>ইমেল:</strong> "+escapeHTML(currentUser.email)+"</p><p><strong>অ্যাকাউন্ট:</strong> "+escapeHTML(data?.role||"writer")+"</p>";
+
+  if(!currentUser){
+    box.innerHTML="প্রোফাইল দেখতে Login করুন।";
+    return;
+  }
+
+  box.innerHTML="প্রোফাইল লোড হচ্ছে...";
+
+  const {data:profile}=await supabaseClient
+    .from("profiles")
+    .select("display_name,role")
+    .eq("id",currentUser.id)
+    .maybeSingle();
+
+  const authorName=
+    profile?.display_name ||
+    currentUser.user_metadata?.display_name ||
+    "লেখক";
+
+  const {data:novels,error}=await supabaseClient
+    .from("novels")
+    .select("id,title,description,cover_url,genre,status,visibility,created_at")
+    .eq("author_id",currentUser.id)
+    .eq("status","published")
+    .eq("visibility","public")
+    .order("created_at",{ascending:false});
+
+  if(error){
+    box.innerHTML="গল্প লোড করা যায়নি: "+escapeHTML(error.message);
+    return;
+  }
+
+  const stories=(novels||[]).map(n=>({
+    ...n,
+    author_name:authorName
+  }));
+
+  box.innerHTML=
+    "<h3>লেখক: "+escapeHTML(authorName)+"</h3>"+
+    "<p>প্রকাশিত গল্প ও উপন্যাস: "+stories.length+"টি</p>"+
+    '<div class="book-grid">'+
+    (stories.length
+      ?stories.map(bookCard).join("")
+      :'<div class="empty">এখনও কোনো গল্প প্রকাশিত হয়নি।</div>')+
+    "</div>";
 }
   async function updatePassword(){
   const password=byId("newPassword").value;
