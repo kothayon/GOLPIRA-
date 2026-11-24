@@ -228,7 +228,7 @@ label{display:block;font-weight:600;font-size:14px}
    <label>লেখকের নাম</label><input id="novelAuthor" class="field" placeholder="লেখকের নাম">
    <label>ধরন / বিভাগ</label><input id="novelGenre" class="field" placeholder="যেমন: প্রেম, রহস্য, থ্রিলার">
     <label>উপন্যাসের Privacy নির্বাচন করুন</label>
-<select id="novelVisibility" class="field">
+<select id="novelVisibility" class="field" onchange="updateNovelSaveButton()">
   <option value="public">Public — সবাই পড়তে পারবে</option>
   <option value="private">Private — শুধু আমি পড়তে পারব</option>
 </select>
