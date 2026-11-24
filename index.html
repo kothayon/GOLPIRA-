@@ -788,53 +788,136 @@ async function searchOwnStories(){
 }
   
 function closeNovelForm(){byId("novelEditor").classList.add("hidden");}
+
 async function saveNovel(){
-  const title=byId("novelTitle").value.trim(),genre=byId("novelGenre").value.trim(),description=byId("novelDescription").value.trim();
-  const authorName=byId("novelAuthor").value.trim()||"লেখক",cover=byId("novelCover").value.trim(),editId=byId("editingNovelId").value;
-  if(!title){showNotice("novelMessage","উপন্যাসের নাম লিখুন।","error");return;}
-  if(cover&&!/^https?:\/\//i.test(cover)){showNotice("novelMessage","কভার ছবির URL https:// দিয়ে শুরু হতে হবে।","error");return;}
-  const {data:{user},error:userError}=await supabaseClient.auth.getUser();
-  if(userError||!user){showNotice("novelMessage","সেশন শেষ হয়েছে। আবার Login করুন।","error");return;}
-  let finalCoverUrl = cover || null;
+  const title=byId("novelTitle").value.trim();
+  const genre=byId("novelGenre").value.trim();
+  const description=byId("novelDescription").value.trim();
+  const cover=byId("novelCover").value.trim();
+  const editId=byId("editingNovelId").value;
+  const visibility=byId("novelVisibility").value;
+  const hasEpisodes=byId("hasEpisodes").value==="yes";
+  const oldMode=hasEpisodes && byId("episodeMode").value==="old";
+  const firstTitle=byId("firstEpisodeTitle").value.trim();
+  const firstContent=byId("firstEpisodeContent").value.trim();
 
-const coverFile = byId("novelCoverFile").files[0];
-
-if (coverFile) {
-  const fileExt = coverFile.name.split(".").pop();
-  const filePath = currentUser.id + "/" + Date.now() + "." + fileExt;
-
-  const { data: uploadData, error: uploadError } =
-    await supabaseClient.storage
-      .from("novel-covers")
-      .upload(filePath, coverFile);
-
-  if (uploadError) {
-    showNotice("novelMessage", "ছবি আপলোড হয়নি: " + uploadError.message, "error");
+  if(oldMode){
+    alert("পুরোনো গল্প নির্বাচন করে Episode যোগ করুন।");
     return;
   }
 
-  const { data: publicData } = supabaseClient.storage
-    .from("novel-covers")
-    .getPublicUrl(uploadData.path);
+  if(!title){
+    showNotice("novelMessage","উপন্যাসের নাম লিখুন।","error");
+    return;
+  }
 
-  finalCoverUrl = publicData.publicUrl;
-}
+  if(!firstTitle || !firstContent){
+    showNotice("novelMessage","গল্পের শিরোনাম ও লেখা পূরণ করুন।","error");
+    return;
+  }
+
+  if(cover && !/^https?:\/\//i.test(cover)){
+    showNotice("novelMessage","সঠিক কভার URL দিন।","error");
+    return;
+  }
+
+  const {data:{user},error:userError}=await supabaseClient.auth.getUser();
+
+  if(userError || !user){
+    showNotice("novelMessage","আবার Login করুন।","error");
+    return;
+  }
+
+  let finalCoverUrl=cover || null;
+  const coverFile=byId("novelCoverFile")?.files?.[0];
+
+  if(coverFile){
+    const ext=coverFile.name.split(".").pop();
+    const path=user.id+"/"+Date.now()+"."+ext;
+
+    const {data:uploadData,error:uploadError}=
+      await supabaseClient.storage
+      .from("novel-covers").upload(path,coverFile);
+
+    if(uploadError){
+      showNotice("novelMessage",uploadError.message,"error");
+      return;
+    }
+
+    const {data:publicData}=supabaseClient.storage
+      .from("novel-covers").getPublicUrl(uploadData.path);
+
+    finalCoverUrl=publicData.publicUrl;
+  }
+
+  const publishNow=visibility==="public";
+
   const payload={
-  title,
-  genre,
-  description,
-  cover_url:finalCoverUrl,
-  visibility:byId("novelVisibility").value
-};
+    title,
+    genre,
+    description,
+    cover_url:finalCoverUrl,
+    visibility
+  };
+
   try{
-    let result;
-    if(editId) result=await supabaseClient.from("novels").update(payload).eq("id",editId).eq("author_id",user.id);
-    else result=await supabaseClient.from("novels").insert({...payload,author_id:user.id,status:"draft"});
-    if(result.error)throw result.error;
-    showNotice("novelMessage",editId?"উপন্যাসের পরিবর্তন সেভ হয়েছে।":"উপন্যাস Draft হিসেবে সেভ হয়েছে। প্রকাশ করতে অধ্যায় ও প্রকাশনার ব্যবস্থা সম্পূর্ণ করুন।","success");
-    closeNovelForm();await loadMyNovels();
-  }catch(err){showNotice("novelMessage","সেভ করা যায়নি: "+err.message,"error");}
+    if(editId){
+      const {error}=await supabaseClient
+        .from("novels")
+        .update(payload)
+        .eq("id",editId)
+        .eq("author_id",user.id);
+
+      if(error) throw error;
+
+      alert("উপন্যাসের পরিবর্তন সেভ হয়েছে।");
+    }else{
+      const {data:novel,error:novelError}=await supabaseClient
+        .from("novels")
+        .insert({
+          ...payload,
+          author_id:user.id,
+          status:publishNow?"published":"draft"
+        })
+        .select("id")
+        .single();
+
+      if(novelError) throw novelError;
+
+      const {error:chapterError}=await supabaseClient
+        .from("chapters")
+        .insert({
+          novel_id:novel.id,
+          author_id:user.id,
+          chapter_number:1,
+          title:firstTitle,
+          content:firstContent,
+          status:publishNow?"published":"draft"
+        });
+
+      if(chapterError){
+        await supabaseClient.from("novels")
+          .update({status:"draft"})
+          .eq("id",novel.id)
+          .eq("author_id",user.id);
+
+        throw chapterError;
+      }
+
+      alert(publishNow?
+        "গল্প ও প্রথম Episode প্রকাশিত হয়েছে।":
+        "গল্প ও প্রথম Episode Draft হিসেবে সেভ হয়েছে।");
+    }
+
+    closeNovelForm();
+    await loadMyNovels();
+    await loadPublicNovels();
+
+  }catch(err){
+    showNotice("novelMessage","সমস্যা: "+err.message,"error");
+  }
 }
+
 async function loadMyNovels(){
   const area=byId("myNovels");area.textContent="আপনার উপন্যাস লোড হচ্ছে...";
   const {data:{user},error:userError}=await supabaseClient.auth.getUser();
