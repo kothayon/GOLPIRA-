@@ -627,7 +627,13 @@ if (coverFile) {
 
   finalCoverUrl = publicData.publicUrl;
 }
-  const payload={title,genre,description,cover_url:finalCoverUrl};
+  const payload={
+  title,
+  genre,
+  description,
+  cover_url:finalCoverUrl,
+  visibility:byId("novelVisibility").value
+};
   try{
     let result;
     if(editId) result=await supabaseClient.from("novels").update(payload).eq("id",editId).eq("author_id",user.id);
