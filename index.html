@@ -671,7 +671,7 @@ async function toggleNovelPublish(id,status){
   alert("অধ্যায় যাচাই করা যায়নি: "+JSON.stringify(countError));
   return;
 }
-    if(!count){alert("প্রকাশ করার আগে অন্তত একটি অধ্যায় Published করুন।");return;}
+if(!chapterRows || chapterRows.length===0){alert("প্রকাশ করার আগে অন্তত একটি অধ্যায় যোগ করুন!");return;}
   }
   const {error}=await supabaseClient.from("novels").update({status:next}).eq("id",id).eq("author_id",currentUser.id);
   if(error){alert("স্ট্যাটাস পরিবর্তন হয়নি: "+error.message);return;}
