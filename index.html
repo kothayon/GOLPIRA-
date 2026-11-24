@@ -233,8 +233,21 @@ label{display:block;font-weight:600;font-size:14px}
   <option value="private">Private — শুধু আমি পড়তে পারব</option>
 </select>
    <label>কভার ছবির URL (ঐচ্ছিক)</label><input id="novelCover" class="field" type="url" placeholder="https://...">
-   <label>উপন্যাসের বিবরণ</label><textarea id="novelDescription" class="field" placeholder="উপন্যাসের সংক্ষিপ্ত বিবরণ"></textarea>
-   <div class="dashboard-actions"><button class="btn dark" onclick="saveNovel()">Save Novel</button><button class="btn light" onclick="closeNovelForm()">বাতিল</button></div>
+<label>উপন্যাসের বিবরণ</label>
+<textarea id="novelDescription" class="field" placeholder="উপন্যাসের সংক্ষিপ্ত বিবরণ"></textarea>
+
+<div id="firstEpisodeFields">
+  <label id="firstEpisodeTitleLabel">Episode ১-এর শিরোনাম</label>
+  <input id="firstEpisodeTitle" class="field" placeholder="পর্ব ১-এর শিরোনাম">
+
+  <label id="firstEpisodeContentLabel">Episode ১-এর লেখা</label>
+  <textarea id="firstEpisodeContent" class="field" placeholder="এখানে গল্পের লেখা লিখুন..."></textarea>
+</div>
+
+<div class="dashboard-actions">
+  <button class="btn dark" id="novelSaveButton" onclick="saveNovel()">Publish</button>
+  <button class="btn light" onclick="closeNovelForm()">বাতিল</button>
+</div>
    <div id="novelMessage" class="notice hidden"></div>
   </div>
   <div id="myNovels"><p class="notice">আপনার উপন্যাস এখানে দেখা যাবে।</p></div>
