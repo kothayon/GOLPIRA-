@@ -203,6 +203,11 @@ label{display:block;font-weight:600;font-size:14px}
    <label>উপন্যাসের নাম</label><input id="novelTitle" class="field" placeholder="উপন্যাসের নাম">
    <label>লেখকের নাম</label><input id="novelAuthor" class="field" placeholder="লেখকের নাম">
    <label>ধরন / বিভাগ</label><input id="novelGenre" class="field" placeholder="যেমন: প্রেম, রহস্য, থ্রিলার">
+    <label>উপন্যাসের Privacy নির্বাচন করুন</label>
+<select id="novelVisibility" class="field">
+  <option value="public">Public — সবাই পড়তে পারবে</option>
+  <option value="private">Private — শুধু আমি পড়তে পারব</option>
+</select>
    <label>কভার ছবির URL (ঐচ্ছিক)</label><input id="novelCover" class="field" type="url" placeholder="https://...">
    <label>উপন্যাসের বিবরণ</label><textarea id="novelDescription" class="field" placeholder="উপন্যাসের সংক্ষিপ্ত বিবরণ"></textarea>
    <div class="dashboard-actions"><button class="btn dark" onclick="saveNovel()">Save Novel</button><button class="btn light" onclick="closeNovelForm()">বাতিল</button></div>
