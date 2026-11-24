@@ -406,6 +406,32 @@ function friendlyAuthError(message){
     showNotice("authMessage","সমস্যা: "+err.message,"error");
   }
   }
+  
+async function ensureProfile(displayName="লেখক"){
+  if(!supabaseClient) throw new Error("Supabase সংযোগ নেই");
+
+  const {data:{user},error:userError} =
+    await supabaseClient.auth.getUser();
+
+  if(userError) throw userError;
+  if(!user) throw new Error("User Login নেই");
+
+  const {error:profileError} = await supabaseClient
+    .from("profiles")
+    .upsert(
+      {
+        id:user.id,
+        role:"writer"
+      },
+      {
+        onConflict:"id",
+        ignoreDuplicates:true
+      }
+    );
+
+  if(profileError) throw profileError;
+}
+  
 async function loginUser(){
   if(!supabaseClient){showNotice("authMessage","Supabase সংযোগ হয়নি। ইন্টারনেট বা CDN সংযোগ পরীক্ষা করুন।","error");return;}
   const email=byId("loginEmail").value.trim(),password=byId("loginPassword").value;
