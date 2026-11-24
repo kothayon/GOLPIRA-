@@ -356,11 +356,11 @@ function bookCard(novel){
   return '<article class="book-card">'+
     '<a href="#" onclick="openNovel(\''+escapeAttr(novel.id)+'\');return false">'+coverMarkup(novel)+'</a>'+
     '<h3><a href="#" onclick="openNovel(\''+escapeAttr(novel.id)+'\');return false">'+escapeHTML(novel.title)+'</a></h3>'+
-    '<div class="book-author">'+escapeHTML(author)+'</div>'+
+    '<div class="book-author"><a href="#" onclick="openAuthorProfile(\''+escapeAttr(novel.author_id)+'\');return false">'+escapeHTML(author)+'</a></div>'+
     '<div class="book-meta">📚 '+escapeHTML(novel.genre||"উপন্যাস")+'</div></article>';
 }
 function featureCard(novel){
-  return '<article class="feature">'+coverMarkup(novel,"cover")+'<div><h3>'+escapeHTML(novel.title)+'</h3><p>লেখক: '+escapeHTML(novel.author_name||"GOLPIRA লেখক")+'</p><button class="btn" onclick="openNovel(\''+escapeAttr(novel.id)+'\')">পড়ুন</button></div></article>';
+  return '<article class="feature">'+coverMarkup(novel,"cover")+'<div><h3>'+escapeHTML(novel.title)+'</h3><p>লেখক: <a href="#" onclick="openAuthorProfile(\''+escapeAttr(novel.author_id)+'\');return false">'+escapeHTML(novel.author_name||"GOLPIRA লেখক")+'</a></p><button class="btn" onclick="openNovel(\''+escapeAttr(novel.id)+'\')">পড়ুন</button></div></article>';
 }
 async function loadPublicNovels(){
   if(!supabaseClient){
