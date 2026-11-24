@@ -306,7 +306,7 @@ let allNovels = [];
 let activeCategory = "সব";
 let currentUser = null;
 let currentNovel = null;
-
+let viewingAuthorId = null;
 function byId(id){ return document.getElementById(id); }
 function showNotice(id, message, type=""){
   const el=byId(id); if(!el)return;
