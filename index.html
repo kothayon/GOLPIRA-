@@ -1026,53 +1026,16 @@ async function logoutUser(){
   if(error){alert(error.message);return;}
   currentUser=null;byId("writerDashboard").classList.add("hidden");byId("authPanel").classList.remove("hidden");switchAuth("login");showPage("home");
 }
-async function renderProfile(){
-  const box=byId("profileInfo");
-
-  if(!currentUser){
-    box.innerHTML="প্রোফাইল দেখতে Login করুন।";
-    return;
-  }
-
-  box.innerHTML="প্রোফাইল লোড হচ্ছে...";
-
-  const {data:profile}=await supabaseClient
-    .from("profiles")
-    .select("display_name,role")
-    .eq("id",currentUser.id)
-    .maybeSingle();
-
-  const authorName=
-    profile?.display_name ||
-    currentUser.user_metadata?.display_name ||
-    "লেখক";
-
-  const {data:novels,error}=await supabaseClient
-    .from("novels")
-    .select("id,title,description,cover_url,genre,status,visibility,created_at")
-    .eq("author_id",currentUser.id)
-    .eq("status","published")
-    .eq("visibility","public")
-    .order("created_at",{ascending:false});
-
-  if(error){
-    box.innerHTML="গল্প লোড করা যায়নি: "+escapeHTML(error.message);
-    return;
-  }
-
-  const stories=(novels||[]).map(n=>({
-    ...n,
-    author_name:authorName
-  }));
-
-  box.innerHTML=
-    "<h3>লেখক: "+escapeHTML(authorName)+"</h3>"+
-    "<p>প্রকাশিত গল্প ও উপন্যাস: "+stories.length+"টি</p>"+
-    '<div class="book-grid">'+
-    (stories.length
-      ?stories.map(bookCard).join("")
-      :'<div class="empty">এখনও কোনো গল্প প্রকাশিত হয়নি।</div>')+
-    "</div>";
+function bookCard(novel){
+  const author=novel.author_name||"GOLPIRA লেখক";
+  return '<article class="book-card">'+
+    '<a href="#" onclick="openNovel(\''+escapeAttr(novel.id)+'\');return false">'+coverMarkup(novel)+'</a>'+
+    '<h3><a href="#" onclick="openNovel(\''+escapeAttr(novel.id)+'\');return false">'+escapeHTML(novel.title)+'</a></h3>'+
+    '<div class="book-author"><a href="#" onclick="openAuthorProfile(\''+escapeAttr(novel.author_id)+'\');return false">'+escapeHTML(author)+'</a></div>'+
+    '<div class="book-meta">📚 '+escapeHTML(novel.genre||"উপন্যাস")+'</div></article>';
+}
+function featureCard(novel){
+  return '<article class="feature">'+coverMarkup(novel,"cover")+'<div><h3>'+escapeHTML(novel.title)+'</h3><p>লেখক: <a href="#" onclick="openAuthorProfile(\''+escapeAttr(novel.author_id)+'\');return false">'+escapeHTML(novel.author_name||"GOLPIRA লেখক")+'</a></p><button class="btn" onclick="openNovel(\''+escapeAttr(novel.id)+'\')">পড়ুন</button></div></article>';
 }
   async function updatePassword(){
   const password=byId("newPassword").value;
