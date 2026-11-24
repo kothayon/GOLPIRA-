@@ -226,7 +226,17 @@ label{display:block;font-weight:600;font-size:14px}
 <label>উপন্যাসের নাম</label>
 <input id="novelTitle" class="field" placeholder="উপন্যাসের নাম">
    <label>লেখকের নাম</label><input id="novelAuthor" class="field" placeholder="লেখকের নাম">
-   <label>ধরন / বিভাগ</label><input id="novelGenre" class="field" placeholder="যেমন: প্রেম, রহস্য, থ্রিলার">
+<label>ধরন / বিভাগ</label>
+<select id="novelGenre" class="field" required>
+  <option value="">বিভাগ নির্বাচন করুন</option>
+  <option value="উপন্যাস">উপন্যাস</option>
+  <option value="প্রেম">প্রেম</option>
+  <option value="বিরহ">বিরহ</option>
+  <option value="রহস্য">রহস্য</option>
+  <option value="থ্রিলার">থ্রিলার</option>
+  <option value="সামাজিক">সামাজিক</option>
+  <option value="রোমান্টিক">রোমান্টিক</option>
+</select>
     <label>উপন্যাসের Privacy নির্বাচন করুন</label>
 <select id="novelVisibility" class="field" onchange="updateNovelSaveButton()">
   <option value="public">Public — সবাই পড়তে পারবে</option>
