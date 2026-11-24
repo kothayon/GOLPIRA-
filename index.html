@@ -853,6 +853,15 @@ async function openChapterEditor(novel){
   byId("saveChapterButton").onclick=saveChapter;
   byId("closeChapterButton").onclick=()=>box.remove();
   await loadWriterChapters(novel.id);
+  const {data: oldEpisodes} = await supabaseClient
+  .from("chapters")
+  .select("chapter_number")
+  .eq("novel_id", novel.id);
+
+const numbers = (oldEpisodes || []).map(x => Number(x.chapter_number));
+const nextEpisode = numbers.length ? Math.max(...numbers) + 1 : 1;
+
+byId("chapterNumber").value = nextEpisode;
   box.scrollIntoView({behavior:"smooth"});
 }
 async function saveChapter(){
