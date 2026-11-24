@@ -590,7 +590,7 @@ function openNovelForm(novel=null){
   byId("editingNovelId").value=novel?.id||"";
   byId("novelTitle").value=novel?.title||"";
   byId("novelAuthor").value=novel?.author_name||currentUser?.user_metadata?.display_name||"";
-  byId("novelGenre").value=novel?.genre||"";
+  byId("novelVisibility").value=novel?.visibility||"public";
   byId("novelCover").value=novel?.cover_url||"";
   byId("novelDescription").value=novel?.description||"";
   hideNotice("novelMessage");byId("novelEditor").scrollIntoView({behavior:"smooth"});
