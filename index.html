@@ -598,7 +598,7 @@ async function saveNovel(){
   if(cover&&!/^https?:\/\//i.test(cover)){showNotice("novelMessage","কভার ছবির URL https:// দিয়ে শুরু হতে হবে।","error");return;}
   const {data:{user},error:userError}=await supabaseClient.auth.getUser();
   if(userError||!user){showNotice("novelMessage","সেশন শেষ হয়েছে। আবার Login করুন।","error");return;}
-  let finalCoverUrl = cover_url;
+  let finalCoverUrl = cover || null;
 
 const coverFile = byId("novelCoverFile").files[0];
 
@@ -622,7 +622,7 @@ if (coverFile) {
 
   finalCoverUrl = publicData.publicUrl;
 }
-  const payload={title,genre,description,cover_url:cover||null};
+  const payload={title,genre,description,cover_url:finalCoverUrl};
   try{
     let result;
     if(editId) result=await supabaseClient.from("novels").update(payload).eq("id",editId).eq("author_id",user.id);
