@@ -604,6 +604,40 @@ async function restoreSession(){
     byId("adminDashboard").classList.add("hidden");
   }
 }
+  async function handleImportTypeChange(){
+  const type = byId("importType").value;
+  const wrap = byId("targetNovelWrap");
+  const select = byId("targetNovelId");
+
+  if(type !== "chapter"){
+    wrap.classList.add("hidden");
+    select.value = "";
+    return;
+  }
+
+  wrap.classList.remove("hidden");
+  select.innerHTML = '<option value="">উপন্যাস নির্বাচন করুন</option>';
+
+  const {data,error} = await supabaseClient
+    .from("novels")
+    .select("id,title")
+    .eq("author_id",currentUser.id)
+    .eq("status","published")
+    .order("created_at",{ascending:false})
+    .limit(3);
+
+  if(error){
+    alert("উপন্যাস লোড হয়নি: "+error.message);
+    return;
+  }
+
+  (data || []).forEach(novel => {
+    const option = document.createElement("option");
+    option.value = novel.id;
+    option.textContent = novel.title;
+    select.appendChild(option);
+  });
+  }
   async function submitImportRequest(){
   const message=byId("importMessage");
 
