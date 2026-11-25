@@ -672,6 +672,7 @@ async function uploadImportCover(){
 }
   
   
+
 async function submitImportRequest(){
   const message = byId("importMessage");
 
@@ -688,8 +689,18 @@ async function submitImportRequest(){
   const content = byId("importContent").value.trim();
   const permission = byId("importPermission").checked;
 
+  const targetNovelId =
+    importType === "chapter"
+      ? byId("targetNovelId").value
+      : null;
+
   if(!sourceName || !title || !author || !content){
     alert("সব প্রয়োজনীয় তথ্য পূরণ করুন।");
+    return;
+  }
+
+  if(importType === "chapter" && !targetNovelId){
+    alert("যে উপন্যাসে Episode যোগ করবে সেটি নির্বাচন করুন।");
     return;
   }
 
@@ -722,6 +733,7 @@ async function submitImportRequest(){
       .insert({
         submitted_by: currentUser.id,
         import_type: importType,
+        target_novel_id: targetNovelId,
         source_name: sourceName,
         source_url: sourceUrl,
         title: title,
@@ -745,6 +757,10 @@ async function submitImportRequest(){
     byId("importCover").value = "";
     byId("importPermission").checked = false;
 
+    if(importType === "chapter"){
+      byId("targetNovelId").value = "";
+    }
+
   }catch(error){
     alert("জমা দেওয়া যায়নি: " + error.message);
   }finally{
@@ -752,6 +768,7 @@ async function submitImportRequest(){
     button.textContent = "Admin-এর কাছে জমা দিন";
   }
 }
+
 
   async function loadPendingImports(){
   const area=byId("pendingImportsList");
