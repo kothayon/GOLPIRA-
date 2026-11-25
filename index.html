@@ -196,6 +196,47 @@ label{display:block;font-weight:600;font-size:14px}
    <button class="btn light" onclick="loadMyNovels()">আমার উপন্যাস</button>
    <button class="btn light" onclick="logoutUser()">Logout</button>
   </div>
+   <div class="panel" style="margin:15px 0;">
+  <h3>গল্প Import Request</h3>
+  <p>নিজের লেখা অথবা প্রকাশের লিখিত অনুমতি পাওয়া গল্প জমা দিন।</p>
+
+  <label>গল্পের ধরন</label>
+  <select id="importType" class="field">
+    <option value="story">নতুন গল্প</option>
+    <option value="chapter">নতুন Episode</option>
+  </select>
+
+  <label>উৎসের ওয়েবসাইটের নাম</label>
+  <input id="importSourceName" class="field"
+    placeholder="যেমন: নিজের লেখা / ওয়েবসাইটের নাম">
+
+  <label>মূল গল্পের URL</label>
+  <input id="importSourceUrl" class="field"
+    type="url" placeholder="https://example.com/story">
+
+  <label>গল্পের নাম</label>
+  <input id="importTitle" class="field"
+    placeholder="গল্পের নাম">
+
+  <label>লেখকের নাম</label>
+  <input id="importAuthor" class="field"
+    placeholder="লেখকের নাম">
+
+  <label>গল্পের লেখা</label>
+  <textarea id="importContent" class="field"
+    rows="8" placeholder="অনুমতিপ্রাপ্ত গল্পের লেখা এখানে দিন"></textarea>
+
+  <label>
+    <input type="checkbox" id="importPermission">
+    আমি এই লেখা প্রকাশের মালিক অথবা লিখিত অনুমতি পেয়েছি।
+  </label>
+
+  <button class="btn dark" onclick="submitImportRequest()">
+    Admin-এর কাছে জমা দিন
+  </button>
+
+  <div id="importMessage" class="notice hidden"></div>
+   </div>
   <div id="novelEditor" class="hidden">
    <h3 id="novelEditorTitle">নতুন উপন্যাস</h3>
     <label>অথবা সরাসরি কভার ছবি Upload করুন</label>
