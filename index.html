@@ -647,6 +647,30 @@ async function restoreSession(){
     select.appendChild(option);
   });
 }
+  
+async function uploadImportCover(){
+  const file = byId("importCover").files[0];
+
+  if(!file) return null;
+
+  const extension = file.name.split(".").pop();
+  const filePath = `imports/${currentUser.id}/${crypto.randomUUID()}.${extension}`;
+
+  const {data,error} = await supabaseClient.storage
+    .from("novel cover")
+    .upload(filePath,file,{
+      upsert:false
+    });
+
+  if(error) throw error;
+
+  const {data:publicData} = supabaseClient.storage
+    .from("novel cover")
+    .getPublicUrl(filePath);
+
+  return publicData.publicUrl;
+}
+  
   async function submitImportRequest(){
   const message=byId("importMessage");
 
