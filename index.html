@@ -598,7 +598,78 @@ async function restoreSession(){
     byId("adminDashboard").classList.add("hidden");
   }
 }
-  
+  async function submitImportRequest(){
+  const message=byId("importMessage");
+
+  if(!currentUser){
+    alert("আগে Login করুন।");
+    return;
+  }
+
+  const importType=byId("importType").value;
+  const sourceName=byId("importSourceName").value.trim();
+  const sourceUrl=byId("importSourceUrl").value.trim();
+  const title=byId("importTitle").value.trim();
+  const author=byId("importAuthor").value.trim();
+  const content=byId("importContent").value.trim();
+  const permission=byId("importPermission").checked;
+
+  if(!sourceName||!title||!author||!content){
+    alert("সব প্রয়োজনীয় তথ্য পূরণ করুন।");
+    return;
+  }
+
+  if(!permission){
+    alert("লেখার মালিকানা বা প্রকাশের অনুমতি নিশ্চিত করুন।");
+    return;
+  }
+
+  if(sourceUrl){
+    try{
+      new URL(sourceUrl);
+    }catch(e){
+      alert("সঠিক ওয়েবসাইট URL দিন।");
+      return;
+    }
+  }
+
+  const button=document.querySelector(
+    'button[onclick="submitImportRequest()"]'
+  );
+  button.disabled=true;
+  button.textContent="জমা হচ্ছে...";
+
+  const {error}=await supabaseClient
+    .from("pending_imports")
+    .insert({
+      submitted_by:currentUser.id,
+      import_type:importType,
+      source_name:sourceName,
+      source_url:sourceUrl,
+      title:title,
+      author_name:author,
+      content:{text:content},
+      status:"pending"
+    });
+
+  button.disabled=false;
+  button.textContent="Admin-এর কাছে জমা দিন";
+
+  if(error){
+    alert("জমা দেওয়া যায়নি: "+error.message);
+    return;
+  }
+
+  message.classList.remove("hidden");
+  message.textContent="সফলভাবে Admin-এর কাছে জমা হয়েছে।";
+
+  byId("importSourceName").value="";
+  byId("importSourceUrl").value="";
+  byId("importTitle").value="";
+  byId("importAuthor").value="";
+  byId("importContent").value="";
+  byId("importPermission").checked=false;
+  }
   async function loadPendingImports(){
   const area=byId("pendingImportsList");
   area.textContent="Pending গল্প লোড হচ্ছে...";
