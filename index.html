@@ -654,7 +654,7 @@ async function uploadImportCover(){
   if(!file) return null;
 
   const extension = file.name.split(".").pop();
-  const filePath = `imports/${currentUser.id}/${crypto.randomUUID()}.${extension}`;
+  const filePath = `${currentUser.id}/imports/${crypto.randomUUID()}.${extension}`;
 
   const {data,error} = await supabaseClient.storage
     .from("novel-covers")
