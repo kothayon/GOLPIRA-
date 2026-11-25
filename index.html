@@ -767,13 +767,14 @@ async function submitImportRequest(){
 }
 
 
-  async function loadPendingImports(){
+  
+async function loadPendingImports(){
   const area=byId("pendingImportsList");
   area.textContent="Pending গল্প লোড হচ্ছে...";
 
   const {data,error}=await supabaseClient
     .from("pending_imports")
-    .select("id,import_type,source_name,source_url,title,author_name,status,created_at")
+    .select("id,import_type,source_name,source_url,title,author_name,status,created_at,cover_url")
     .eq("status","pending")
     .order("created_at",{ascending:false});
 
@@ -787,25 +788,36 @@ async function submitImportRequest(){
     return;
   }
 
-  
-area.innerHTML=data.map(item=>`
-  <div class="novel-row">
-    <h3>${escapeHTML(item.title)}</h3>
-    <p>লেখক: ${escapeHTML(item.author_name||"অজানা")}</p>
-    <p>ধরন: ${escapeHTML(item.import_type)}</p>
-    <p>উৎস: ${escapeHTML(item.source_name||"উল্লেখ নেই")}</p>
-    <p>অবস্থা: Pending</p>
-    <button type="button" onclick="approvePendingImport('${item.id}')">
-      Approve
-    </button>
-    <button type="button" onclick="rejectPendingImport('${item.id}')">
-      Reject
-    </button>
-  </div>
-`).join("");
+  area.innerHTML=data.map(item=>`
+    <div class="novel-row">
 
-  }
-  
+      ${item.cover_url ? `
+        <img
+          src="${escapeHTML(item.cover_url)}"
+          alt="Cover Image"
+          loading="lazy"
+          style="width:130px;height:170px;object-fit:cover;border-radius:10px;margin:8px 0;"
+        >
+      ` : ""}
+
+      <h3>${escapeHTML(item.title)}</h3>
+      <p>লেখক: ${escapeHTML(item.author_name||"অজানা")}</p>
+      <p>ধরন: ${escapeHTML(item.import_type)}</p>
+      <p>উৎস: ${escapeHTML(item.source_name||"উল্লেখ নেই")}</p>
+      <p>অবস্থা: Pending</p>
+
+      <button type="button" onclick="approvePendingImport('${item.id}')">
+        Approve
+      </button>
+
+      <button type="button" onclick="rejectPendingImport('${item.id}')">
+        Reject
+      </button>
+
+    </div>
+  `).join("");
+}
+
 async function approvePendingImport(id){
   if(!confirm("এই গল্পটি প্রকাশ করতে চান?")) return;
 
