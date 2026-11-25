@@ -657,7 +657,7 @@ async function uploadImportCover(){
   const filePath = `imports/${currentUser.id}/${crypto.randomUUID()}.${extension}`;
 
   const {data,error} = await supabaseClient.storage
-    .from("novel cover")
+    .from("novel-covers")
     .upload(filePath,file,{
       upsert:false
     });
@@ -665,14 +665,11 @@ async function uploadImportCover(){
   if(error) throw error;
 
   const {data:publicData} = supabaseClient.storage
-    .from("novel cover")
+    .from("novel-covers")
     .getPublicUrl(filePath);
 
   return publicData.publicUrl;
 }
-  
-  
-
 async function submitImportRequest(){
   const message = byId("importMessage");
 
