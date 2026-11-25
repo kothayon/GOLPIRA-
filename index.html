@@ -671,23 +671,24 @@ async function uploadImportCover(){
   return publicData.publicUrl;
 }
   
-  async function submitImportRequest(){
-  const message=byId("importMessage");
+  
+async function submitImportRequest(){
+  const message = byId("importMessage");
 
   if(!currentUser){
     alert("আগে Login করুন।");
     return;
   }
 
-  const importType=byId("importType").value;
-  const sourceName=byId("importSourceName").value.trim();
-  const sourceUrl=byId("importSourceUrl").value.trim();
-  const title=byId("importTitle").value.trim();
-  const author=byId("importAuthor").value.trim();
-  const content=byId("importContent").value.trim();
-  const permission=byId("importPermission").checked;
+  const importType = byId("importType").value;
+  const sourceName = byId("importSourceName").value.trim();
+  const sourceUrl = byId("importSourceUrl").value.trim();
+  const title = byId("importTitle").value.trim();
+  const author = byId("importAuthor").value.trim();
+  const content = byId("importContent").value.trim();
+  const permission = byId("importPermission").checked;
 
-  if(!sourceName||!title||!author||!content){
+  if(!sourceName || !title || !author || !content){
     alert("সব প্রয়োজনীয় তথ্য পূরণ করুন।");
     return;
   }
@@ -706,43 +707,52 @@ async function uploadImportCover(){
     }
   }
 
-  const button=document.querySelector(
+  const button = document.querySelector(
     'button[onclick="submitImportRequest()"]'
   );
-  button.disabled=true;
-  button.textContent="জমা হচ্ছে...";
 
-  const {error}=await supabaseClient
-    .from("pending_imports")
-    .insert({
-      submitted_by:currentUser.id,
-      import_type:importType,
-      source_name:sourceName,
-      source_url:sourceUrl,
-      title:title,
-      author_name:author,
-      content:{text:content},
-      status:"pending"
-    });
+  button.disabled = true;
+  button.textContent = "জমা হচ্ছে...";
 
-  button.disabled=false;
-  button.textContent="Admin-এর কাছে জমা দিন";
+  try{
+    const coverUrl = await uploadImportCover();
 
-  if(error){
-    alert("জমা দেওয়া যায়নি: "+error.message);
-    return;
+    const {error} = await supabaseClient
+      .from("pending_imports")
+      .insert({
+        submitted_by: currentUser.id,
+        import_type: importType,
+        source_name: sourceName,
+        source_url: sourceUrl,
+        title: title,
+        author_name: author,
+        content: {text: content},
+        cover_url: coverUrl,
+        status: "pending"
+      });
+
+    if(error) throw error;
+
+    message.classList.remove("hidden");
+    message.textContent =
+      "Cover-সহ সফলভাবে Admin-এর কাছে জমা হয়েছে।";
+
+    byId("importSourceName").value = "";
+    byId("importSourceUrl").value = "";
+    byId("importTitle").value = "";
+    byId("importAuthor").value = "";
+    byId("importContent").value = "";
+    byId("importCover").value = "";
+    byId("importPermission").checked = false;
+
+  }catch(error){
+    alert("জমা দেওয়া যায়নি: " + error.message);
+  }finally{
+    button.disabled = false;
+    button.textContent = "Admin-এর কাছে জমা দিন";
   }
+}
 
-  message.classList.remove("hidden");
-  message.textContent="সফলভাবে Admin-এর কাছে জমা হয়েছে।";
-
-  byId("importSourceName").value="";
-  byId("importSourceUrl").value="";
-  byId("importTitle").value="";
-  byId("importAuthor").value="";
-  byId("importContent").value="";
-  byId("importPermission").checked=false;
-  }
   async function loadPendingImports(){
   const area=byId("pendingImportsList");
   area.textContent="Pending গল্প লোড হচ্ছে...";
