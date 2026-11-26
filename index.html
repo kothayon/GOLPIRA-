@@ -777,52 +777,74 @@ async function submitImportRequest(){
 
 
   
-async function startBulkSync(){
-  const button = byId("bulkSyncButton");
 
-  if(!currentUser){
-    alert("আগে Admin হিসেবে Login করুন।");
-    return;
-  }
+async function startBulkSync() {
+  const btn = byId("bulkSyncButton");
 
-  button.disabled = true;
-  button.textContent = "Sync চলছে...";
+  try {
+    const { data: sessionData, error: sessionError } =
+      await supabaseClient.auth.getSession();
 
-  showNotice(
-    "bulkSyncMessage",
-    "সব Active Website থেকে গল্প সংগ্রহ করা হচ্ছে..."
-  );
+    if (sessionError) throw sessionError;
 
-  try{
-    const {data,error} = await supabaseClient.functions.invoke(
-      "golponir-bulk-sync",
-      {body:{}}
-    );
+    const session = sessionData?.session;
 
-    if(error){
-      throw new Error(error.message);
+    if (!session?.access_token) {
+      showNotice(
+        "bulkSyncMessage",
+        "Admin login session পাওয়া যায়নি। আবার Admin Login করুন।",
+        "error"
+      );
+      return;
     }
+
+    btn.disabled = true;
+    btn.textContent = "Sync চলছে...";
 
     showNotice(
       "bulkSyncMessage",
-      "Sync Result: " + JSON.stringify(data),
+      "Golponir থেকে নতুন গল্প সংগ্রহ করা হচ্ছে...",
+      "info"
+    );
+
+    const { data, error } =
+      await supabaseClient.functions.invoke(
+        "golponir-bulk-sync",
+        {
+          body: {},
+          headers: {
+            Authorization: `Bearer ${session.access_token}`
+          }
+        }
+      );
+
+    if (error) throw error;
+
+    showNotice(
+      "bulkSyncMessage",
+      data?.message || "Bulk Sync সম্পন্ন হয়েছে।",
       "success"
     );
 
     await loadPendingImports();
 
-  }catch(error){
+  } catch (error) {
+    console.error("Golponir Bulk Sync Error:", error);
+
     showNotice(
       "bulkSyncMessage",
-      "Sync Error: " + error.message,
+      error.message || "Bulk Sync ব্যর্থ হয়েছে।",
       "error"
     );
-  }finally{
-    button.disabled = false;
-    button.textContent = "সব Website Sync শুরু করুন";
+
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = "Bulk Sync শুরু করুন";
+    }
   }
-      }
-  
+}
+
 async function loadPendingImports(){
   const area=byId("pendingImportsList");
   area.textContent="Pending গল্প লোড হচ্ছে...";
