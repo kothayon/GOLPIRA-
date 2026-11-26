@@ -777,6 +777,52 @@ async function submitImportRequest(){
 
 
   
+async function startBulkSync(){
+  const button = byId("bulkSyncButton");
+
+  if(!currentUser){
+    alert("আগে Admin হিসেবে Login করুন।");
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "Sync চলছে...";
+
+  showNotice(
+    "bulkSyncMessage",
+    "সব Active Website থেকে গল্প সংগ্রহ করা হচ্ছে..."
+  );
+
+  try{
+    const {data,error} = await supabaseClient.functions.invoke(
+      "golponir-bulk-sync",
+      {body:{}}
+    );
+
+    if(error){
+      throw new Error(error.message);
+    }
+
+    showNotice(
+      "bulkSyncMessage",
+      "Sync Result: " + JSON.stringify(data),
+      "success"
+    );
+
+    await loadPendingImports();
+
+  }catch(error){
+    showNotice(
+      "bulkSyncMessage",
+      "Sync Error: " + error.message,
+      "error"
+    );
+  }finally{
+    button.disabled = false;
+    button.textContent = "সব Website Sync শুরু করুন";
+  }
+      }
+  
 async function loadPendingImports(){
   const area=byId("pendingImportsList");
   area.textContent="Pending গল্প লোড হচ্ছে...";
