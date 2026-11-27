@@ -831,6 +831,22 @@ Authorization: "Bearer " + session.access_token
   } catch (error) {
     console.error("Golponir Bulk Sync Error:", error);
 
+    let detail = error?.message || "Bulk Sync ব্যর্থ হয়েছে।";
+
+    try {
+      if (error?.context && typeof error.context.text === "function") {
+        const responseText = await error.context.text();
+        if (responseText) detail += " | " + responseText;
+      }
+    } catch (readError) {
+      console.error(readError);
+    }
+
+    showNotice(
+      "bulkSyncMessage",
+      "Sync Error: " + detail,
+      "error"
+    );
     showNotice(
       "bulkSyncMessage",
       error.message || "Bulk Sync ব্যর্থ হয়েছে।",
