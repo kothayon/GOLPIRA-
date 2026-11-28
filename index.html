@@ -1446,5 +1446,148 @@ function initSupabase(){
 }
 document.addEventListener("DOMContentLoaded",initSupabase);
 </script>
+  
+<!-- GOLPIRA BULK SYNC PANEL -->
+<section id="golpiraBulkSync" class="sync-panel">
+  <h2>📚 GOLPIRA Bulk Sync</h2>
+  <p>পাঁচটি Source Website থেকে Sync শুরু করুন।</p>
+
+  <div class="sync-sources">
+    <span>Golponir</span>
+    <span>eBanglaLibrary</span>
+    <span>Romantic Golpo</span>
+    <span>GolperDiary</span>
+    <span>GolperShohor</span>
+  </div>
+
+  <button id="bulkSyncBtn" onclick="startGolpiraBulkSync()">
+    🔄 Start Bulk Sync
+  </button>
+
+  <p id="bulkSyncStatus">Sync এখনো শুরু হয়নি।</p>
+
+  <pre id="bulkSyncResult"></pre>
+</section>
+
+<style>
+.sync-panel {
+  background: #151923;
+  color: white;
+  padding: 18px;
+  margin: 20px 0;
+  border-radius: 12px;
+  border: 1px solid #343b4b;
+}
+.sync-panel h2 {
+  margin-top: 0;
+}
+.sync-sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 15px 0;
+}
+.sync-sources span {
+  background: #263449;
+  padding: 7px 10px;
+  border-radius: 7px;
+  font-size: 13px;
+}
+#bulkSyncBtn {
+  width: 100%;
+  padding: 13px;
+  border: 0;
+  border-radius: 8px;
+  background: #16865c;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+#bulkSyncBtn:disabled {
+  opacity: .6;
+}
+#bulkSyncStatus {
+  margin-top: 15px;
+  overflow-wrap: anywhere;
+}
+#bulkSyncResult {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  background: #0c1018;
+  padding: 12px;
+  border-radius: 8px;
+  max-height: 300px;
+  overflow: auto;
+}
+</style>
+
+<script>
+async function startGolpiraBulkSync() {
+  const btn = document.getElementById("bulkSyncBtn");
+  const status = document.getElementById("bulkSyncStatus");
+  const result = document.getElementById("bulkSyncResult");
+
+  if (typeof supabaseClient === "undefined") {
+    status.textContent = "Error: Supabase client পাওয়া যায়নি।";
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = "⏳ Sync চলছে...";
+  status.textContent = "Supabase-এর সঙ্গে যোগাযোগ করা হচ্ছে...";
+  result.textContent = "";
+
+  try {
+    const { data: sessionData, error: sessionError } =
+      await supabaseClient.auth.getSession();
+
+    if (sessionError) throw sessionError;
+
+    const session = sessionData.session;
+
+    if (!session) {
+      throw new Error("প্রথমে Admin Account দিয়ে Login করুন।");
+    }
+
+    status.textContent = "পাঁচটি Source-এর Sync Request পাঠানো হচ্ছে...";
+
+    const { data, error } =
+      await supabaseClient.functions.invoke(
+        "golponir-bulk-sync",
+        {
+          body: {},
+          headers: {
+            Authorization: "Bearer " + session.access_token
+          }
+        }
+      );
+
+    if (error) {
+      let detail = error.message || "Unknown error";
+
+      if (error.context) {
+        try {
+          const response = await error.context.json();
+          detail = JSON.stringify(response, null, 2);
+        } catch (_) {}
+      }
+
+      throw new Error(detail);
+    }
+
+    status.textContent = "✅ Sync Request সফলভাবে সম্পন্ন হয়েছে।";
+    result.textContent = JSON.stringify(data, null, 2);
+
+  } catch (error) {
+    status.textContent = "❌ Sync ব্যর্থ হয়েছে।";
+    result.textContent = error.message || String(error);
+
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "🔄 Start Bulk Sync";
+  }
+}
+</script>
 </body>
 </html>
